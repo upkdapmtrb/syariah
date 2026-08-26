@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>UPK DAPM Tanete Riattang Barat - Sistem Pembiayaan Syariah</title>
+  <title>UPK DAPM Tanete Riattang Barat - Sistem Pembiayaan Syariah Kelompok</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -55,9 +55,7 @@
   <!-- TOAST NOTIFIKASI -->
   <div id="toast" class="fixed top-4 right-4 z-[10000] hidden px-4 py-2.5 rounded-xl shadow-2xl text-white text-xs font-semibold transition-all"></div>
 
-  <!-- ============================================================== -->
   <!-- LOGIN SCREEN OVERLAY -->
-  <!-- ============================================================== -->
   <div id="login-screen" class="fixed inset-0 bg-slate-900/95 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 md:p-8 shadow-2xl space-y-5 border border-slate-200">
       <div class="text-center space-y-2">
@@ -104,7 +102,7 @@
     </div>
   </div>
 
-  <!-- MOBILE HEADER TOPBAR (HP ONLY) -->
+  <!-- MOBILE HEADER TOPBAR -->
   <div class="md:hidden bg-slate-900 text-white p-3 flex items-center justify-between z-30 border-b border-slate-800 flex-shrink-0">
     <div class="flex items-center gap-2.5">
       <button onclick="toggleMobileSidebar()" class="p-1.5 text-slate-300 hover:text-white focus:outline-none">
@@ -144,13 +142,13 @@
       </button>
 
       <button onclick="switchTab('nasabah')" id="nav-nasabah" class="nav-btn w-full flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
-        <i class="fa-solid fa-users w-5 text-emerald-400"></i> Data Nasabah
+        <i class="fa-solid fa-users w-5 text-emerald-400"></i> Data Kelompok (Nasabah)
       </button>
 
       <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-3 py-1">Pembiayaan Syariah</div>
 
       <button onclick="switchTab('pengajuan')" id="nav-pengajuan" class="nav-btn w-full flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
-        <i class="fa-solid fa-file-signature w-5 text-emerald-400"></i> Pengajuan Baru
+        <i class="fa-solid fa-file-signature w-5 text-emerald-400"></i> Pengajuan Kelompok
       </button>
 
       <button onclick="switchTab('approval')" id="nav-approval" class="nav-btn w-full flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
@@ -215,7 +213,7 @@
     <header class="h-14 bg-white border-b border-slate-200 hidden md:flex items-center justify-between px-6 no-print flex-shrink-0">
       <div class="flex items-center gap-3">
         <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-md">
-          <i class="fa-solid fa-shield-halved mr-1"></i> Akad Murabahah Flat 1.75%
+          <i class="fa-solid fa-shield-halved mr-1"></i> Akad Murabahah Kelompok Flat 1.75%
         </span>
         <h2 id="topbar-title" class="font-bold text-slate-800 text-base">Dashboard Utama</h2>
       </div>
@@ -243,7 +241,7 @@
               <div class="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-handshake"></i></div>
             </div>
             <div class="text-base md:text-xl font-bold text-slate-800" id="dash-pembiayaan-aktif">Rp 0</div>
-            <div class="text-[10px] md:text-[11px] text-emerald-700 font-medium mt-1" id="dash-pembiayaan-count">0 Rekening Aktif</div>
+            <div class="text-[10px] md:text-[11px] text-emerald-700 font-medium mt-1" id="dash-pembiayaan-count">0 Rekening Kelompok</div>
           </div>
 
           <div class="bg-white p-3.5 md:p-4 rounded-xl shadow-sm border border-slate-200">
@@ -295,7 +293,7 @@
               <thead class="bg-slate-100 text-slate-600 uppercase font-semibold">
                 <tr>
                   <th class="p-2.5 md:p-3">No Pembiayaan</th>
-                  <th class="p-2.5 md:p-3">Nama Nasabah</th>
+                  <th class="p-2.5 md:p-3">Nama Kelompok</th>
                   <th class="p-2.5 md:p-3">Angsuran Ke</th>
                   <th class="p-2.5 md:p-3">Jatuh Tempo</th>
                   <th class="p-2.5 md:p-3">Total Tagihan</th>
@@ -309,15 +307,15 @@
         </div>
       </section>
 
-      <!-- TAB 2: NASABAH -->
+      <!-- TAB 2: DATA KELOMPOK / NASABAH -->
       <section id="tab-nasabah" class="hidden space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2 bg-white p-3 md:p-4 rounded-xl border border-slate-200">
           <div class="flex gap-2 items-center flex-1 max-w-md">
             <i class="fa-solid fa-search text-slate-400"></i>
-            <input type="text" id="cari-nasabah" onkeyup="filterNasabah()" placeholder="Cari NIK, Nama Nasabah, No WA..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-emerald-500">
+            <input type="text" id="cari-nasabah" onkeyup="filterNasabah()" placeholder="Cari NIK Ketua, Nama Kelompok, No WA..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-emerald-500">
           </div>
           <button onclick="openModalTambahNasabah()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-medium px-4 py-2 rounded-lg flex items-center justify-center gap-2 text-xs shadow-sm transition">
-            <i class="fa-solid fa-user-plus"></i> Tambah Nasabah
+            <i class="fa-solid fa-user-plus"></i> Tambah Kelompok
           </button>
         </div>
 
@@ -326,12 +324,12 @@
             <table class="w-full text-left text-xs whitespace-nowrap md:whitespace-normal">
               <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
                 <tr>
-                  <th class="p-3">ID Nasabah</th>
-                  <th class="p-3">NIK</th>
-                  <th class="p-3">Nama Lengkap / Kelompok</th>
-                  <th class="p-3">Usaha / Pekerjaan</th>
+                  <th class="p-3">ID Kelompok</th>
+                  <th class="p-3">NIK Ketua</th>
+                  <th class="p-3">Nama Kelompok</th>
+                  <th class="p-3">Sektor Usaha Kelompok</th>
                   <th class="p-3">No. WhatsApp</th>
-                  <th class="p-3">Alamat</th>
+                  <th class="p-3">Alamat Domisili</th>
                   <th class="p-3 text-center">Aksi Kelola</th>
                 </tr>
               </thead>
@@ -341,31 +339,27 @@
         </div>
       </section>
 
-      <!-- TAB 3: PENGAJUAN -->
+      <!-- TAB 3: PENGAJUAN PEMBIAYAAN KELOMPOK -->
       <section id="tab-pengajuan" class="hidden space-y-4 md:space-y-6">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
+          <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm space-y-4 lg:col-span-5">
             <div class="border-b pb-3">
-              <h3 class="font-bold text-slate-800 text-sm">Formulir Pengajuan Pembiayaan</h3>
-              <p class="text-xs text-slate-500">Akad Murabahah | Min: Rp 5.000.000 | Maks: 24 Bulan</p>
+              <h3 class="font-bold text-slate-800 text-sm">Formulir Pengajuan Kelompok</h3>
+              <p class="text-xs text-slate-500">Akad Murabahah Kolektif | Tanggung Renteng | Min Total Rp 5.000.000</p>
             </div>
             
             <form id="form-pengajuan" onsubmit="handlePengajuanSubmit(event)" class="space-y-3">
               <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Nasabah / Kelompok</label>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Kelompok (Nasabah)</label>
                 <select id="aju-nasabah" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs"></select>
               </div>
               <div>
                 <label class="block text-xs font-semibold text-slate-600 mb-1">Tujuan / Objek Modal Usaha</label>
-                <input type="text" id="aju-tujuan" required placeholder="Contoh: Pengadaan Modal Usaha Dagang" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Harga Pokok Modal (Rp)</label>
-                <input type="number" id="aju-plafon" min="5000000" step="100000" oninput="kalkulasiPengajuan()" required value="5000000" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold text-emerald-800">
+                <input type="text" id="aju-tujuan" required placeholder="Contoh: Pengadaan Modal Usaha Dagang & Tani Anggota" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs">
               </div>
               <div>
                 <label class="block text-xs font-semibold text-slate-600 mb-1">Jangka Waktu (Bulan)</label>
-                <select id="aju-tenor" onchange="kalkulasiPengajuan()" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs">
+                <select id="aju-tenor" onchange="kalkulasiKelompok()" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold text-emerald-800">
                   <option value="6">6 Bulan</option>
                   <option value="12" selected>12 Bulan</option>
                   <option value="18">18 Bulan</option>
@@ -373,28 +367,67 @@
                 </select>
               </div>
 
-              <div class="p-3 bg-emerald-50 rounded-lg border border-emerald-200 space-y-1 text-xs">
-                <div class="flex justify-between text-slate-600"><span>Margin Jasa / Bln (1.75%):</span><span id="sim-jasa-bln" class="font-semibold text-slate-800">Rp 0</span></div>
-                <div class="flex justify-between text-slate-600"><span>Total Margin Keuntungan:</span><span id="sim-total-jasa" class="font-semibold text-slate-800">Rp 0</span></div>
-                <div class="flex justify-between text-slate-600"><span>Total Harga Jual:</span><span id="sim-total-kewajiban" class="font-bold text-slate-900">Rp 0</span></div>
-                <div class="flex justify-between border-t border-emerald-200 pt-1 text-emerald-900 font-bold"><span>Angsuran per Bulan:</span><span id="sim-angsuran-bln">Rp 0</span></div>
+              <!-- DAFTAR ANGGOTA DENGAN PLAFON BERVARIASI -->
+              <div class="space-y-2 border-t pt-3">
+                <div class="flex justify-between items-center">
+                  <label class="block text-xs font-bold text-slate-800">Alokasi Plafon Anggota</label>
+                  <button type="button" onclick="tambahBarisAnggota()" class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded text-[11px] font-semibold flex items-center gap-1 shadow-sm">
+                    <i class="fa-solid fa-plus"></i> Tambah Anggota
+                  </button>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-200 rounded-lg max-h-56">
+                  <table class="w-full text-left text-xs" id="tabel-input-anggota">
+                    <thead class="bg-slate-100 text-slate-700 font-semibold border-b sticky top-0">
+                      <tr>
+                        <th class="p-1.5 w-6 text-center">#</th>
+                        <th class="p-1.5">Nama Anggota</th>
+                        <th class="p-1.5 w-28">Plafon (Rp)</th>
+                        <th class="p-1.5 w-8 text-center">Hapus</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-input-anggota" class="divide-y divide-slate-100 bg-white">
+                      <tr>
+                        <td class="p-1.5 text-center text-slate-400 font-bold">1</td>
+                        <td class="p-1"><input type="text" required placeholder="Nama Ketua/Anggota 1" class="mem-nama w-full bg-slate-50 border rounded px-2 py-1 text-xs font-semibold"></td>
+                        <td class="p-1"><input type="number" step="100000" min="500000" value="2000000" oninput="kalkulasiKelompok()" required class="mem-plafon w-full bg-slate-50 border rounded px-2 py-1 text-xs font-bold text-emerald-800"></td>
+                        <td class="p-1 text-center"><button type="button" disabled class="text-slate-300 p-1"><i class="fa-solid fa-trash"></i></button></td>
+                      </tr>
+                      <tr>
+                        <td class="p-1.5 text-center text-slate-400 font-bold">2</td>
+                        <td class="p-1"><input type="text" required placeholder="Nama Anggota 2" class="mem-nama w-full bg-slate-50 border rounded px-2 py-1 text-xs font-semibold"></td>
+                        <td class="p-1"><input type="number" step="100000" min="500000" value="3000000" oninput="kalkulasiKelompok()" required class="mem-plafon w-full bg-slate-50 border rounded px-2 py-1 text-xs font-bold text-emerald-800"></td>
+                        <td class="p-1 text-center"><button type="button" onclick="hapusBarisAnggota(this)" class="text-rose-500 hover:text-rose-700 p-1"><i class="fa-solid fa-trash"></i></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
-              <button type="submit" id="btn-submit-pengajuan" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2.5 rounded-lg text-xs shadow-sm">Kirim Pengajuan</button>
+              <!-- SIMULASI KEUANGAN KELOMPOK -->
+              <div class="p-3 bg-emerald-50 rounded-lg border border-emerald-200 space-y-1 text-xs">
+                <div class="flex justify-between text-slate-600"><span>Total Plafon Kelompok:</span><span id="sim-total-plafon" class="font-bold text-emerald-900">Rp 5.000.000</span></div>
+                <div class="flex justify-between text-slate-600"><span>Total Margin (1.75%/bln):</span><span id="sim-total-jasa" class="font-semibold text-slate-800">Rp 0</span></div>
+                <div class="flex justify-between text-slate-600"><span>Total Kewajiban:</span><span id="sim-total-kewajiban" class="font-bold text-slate-900">Rp 0</span></div>
+                <div class="flex justify-between border-t border-emerald-200 pt-1 text-emerald-900 font-bold"><span>Total Angsuran Kelompok / Bln:</span><span id="sim-angsuran-bln">Rp 0</span></div>
+              </div>
+
+              <button type="submit" id="btn-submit-pengajuan" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2.5 rounded-lg text-xs shadow-sm">Kirim Pengajuan Kelompok</button>
             </form>
           </div>
 
-          <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm lg:col-span-2 space-y-3">
+          <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm lg:col-span-7 space-y-3">
             <h3 class="font-bold text-slate-800 text-sm border-b pb-2">Riwayat Pengajuan Pembiayaan</h3>
             <div class="overflow-x-auto">
               <table class="w-full text-left text-xs whitespace-nowrap md:whitespace-normal">
                 <thead class="bg-slate-50 text-slate-600 font-semibold">
                   <tr>
                     <th class="p-2.5">No Pengajuan</th>
-                    <th class="p-2.5">Nama Nasabah</th>
-                    <th class="p-2.5">Pokok</th>
+                    <th class="p-2.5">Kelompok</th>
+                    <th class="p-2.5">Anggota</th>
+                    <th class="p-2.5">Total Plafon</th>
                     <th class="p-2.5">Tenor</th>
-                    <th class="p-2.5">Angsuran</th>
+                    <th class="p-2.5">Angsuran / Bln</th>
                     <th class="p-2.5">Status</th>
                   </tr>
                 </thead>
@@ -408,8 +441,8 @@
       <!-- TAB 4: APPROVAL -->
       <section id="tab-approval" class="hidden space-y-4">
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <h3 class="font-bold text-slate-800 text-sm">Verifikasi & Approval Pembiayaan</h3>
-          <p class="text-xs text-slate-500">Tinjau kelayakan usaha sebelum disetujui untuk penerbitan akad dan pencairan dana.</p>
+          <h3 class="font-bold text-slate-800 text-sm">Verifikasi & Approval Pembiayaan Kelompok</h3>
+          <p class="text-xs text-slate-500">Tinjau kelayakan usaha kelompok dan alokasi dana anggota sebelum disetujui untuk penerbitan akad.</p>
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
@@ -419,8 +452,9 @@
                 <tr>
                   <th class="p-3">No Pengajuan</th>
                   <th class="p-3">Tanggal</th>
-                  <th class="p-3">Nasabah & Usaha</th>
-                  <th class="p-3">Harga Pokok</th>
+                  <th class="p-3">Nama Kelompok</th>
+                  <th class="p-3">Jumlah Anggota</th>
+                  <th class="p-3">Total Plafon</th>
                   <th class="p-3">Tenor</th>
                   <th class="p-3">Total Kewajiban</th>
                   <th class="p-3 text-center">Keputusan</th>
@@ -435,8 +469,8 @@
       <!-- TAB 5: PENCAIRAN & AKAD -->
       <section id="tab-pencairan" class="hidden space-y-4">
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <h3 class="font-bold text-slate-800 text-sm">Pencairan Dana & Penerbitan Akad Murabahah</h3>
-          <p class="text-xs text-slate-500">Cairkan pembiayaan dan cetak dokumen Akad Perjanjian Resmi secara langsung.</p>
+          <h3 class="font-bold text-slate-800 text-sm">Pencairan Dana & Penerbitan Akad Murabahah Kolektif</h3>
+          <p class="text-xs text-slate-500">Cairkan pembiayaan dan cetak dokumen Akad Perjanjian Kolektif Tanggung Renteng secara resmi.</p>
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
@@ -446,8 +480,8 @@
               <thead class="bg-slate-100 text-slate-600 font-semibold border-b">
                 <tr>
                   <th class="p-3">No Pembiayaan</th>
-                  <th class="p-3">Nama Nasabah</th>
-                  <th class="p-3">Pokok Disetujui</th>
+                  <th class="p-3">Nama Kelompok</th>
+                  <th class="p-3">Total Plafon</th>
                   <th class="p-3">Tenor</th>
                   <th class="p-3">Status</th>
                   <th class="p-3 text-center">Eksekusi Pencairan</th>
@@ -466,8 +500,8 @@
                 <tr>
                   <th class="p-3">No Akad / Kwitansi</th>
                   <th class="p-3">Tgl Cair</th>
-                  <th class="p-3">Nama Nasabah</th>
-                  <th class="p-3">Plafon</th>
+                  <th class="p-3">Nama Kelompok</th>
+                  <th class="p-3">Total Plafon</th>
                   <th class="p-3">Sumber Dana</th>
                   <th class="p-3 text-center">Cetak Dokumen</th>
                 </tr>
@@ -486,7 +520,7 @@
             <select id="jadwal-filter-pembiayaan" onchange="renderJadwalAngsuran()" class="w-full md:w-80 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs"></select>
           </div>
           <button onclick="printElement('kartu-angsuran-area')" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2">
-            <i class="fa-solid fa-print"></i> Cetak Kartu Angsuran
+            <i class="fa-solid fa-print"></i> Cetak Kartu Angsuran Kelompok
           </button>
         </div>
 
@@ -494,7 +528,7 @@
           <div class="flex items-center gap-3 border-b pb-3">
             <img src="https://3.bp.blogspot.com/-32ZHn935ezc/Wnp2nVVpehI/AAAAAAAAGBM/1Trxtsh2Dj88FTi928aW6XSQqPCcnuSmQCLcBGAs/s1600/UPK%2BDAPM.jpg" alt="Logo" class="w-10 h-10 object-contain">
             <div>
-              <h3 class="font-bold text-slate-900 text-sm">KARTU ANGSURAN PEMBIAYAAN SYARIAH</h3>
+              <h3 class="font-bold text-slate-900 text-sm">KARTU ANGSURAN PEMBIAYAAN SYARIAH KELOMPOK</h3>
               <p class="text-[11px] text-slate-500" id="kartu-subhead">UPK DAPM TANETE RIATTANG BARAT, KAB. BONE</p>
             </div>
           </div>
@@ -505,7 +539,7 @@
                 <tr>
                   <th class="p-2.5">Ke</th>
                   <th class="p-2.5">Jatuh Tempo</th>
-                  <th class="p-2.5">Pokok</th>
+                  <th class="p-2.5">Pokok Kelompok</th>
                   <th class="p-2.5">Margin (1.75%)</th>
                   <th class="p-2.5">Total Tagihan</th>
                   <th class="p-2.5">Dibayar</th>
@@ -525,12 +559,12 @@
           <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
             <div class="border-b pb-3">
               <h3 class="font-bold text-slate-800 text-sm">Penerimaan Pembayaran Angsuran</h3>
-              <p class="text-xs text-slate-500">Mencatat pelunasan pokok & margin jasa syariah.</p>
+              <p class="text-xs text-slate-500">Mencatat pelunasan angsuran kolektif kelompok.</p>
             </div>
 
             <form id="form-pembayaran" onsubmit="handlePembayaranSubmit(event)" class="space-y-3">
               <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Tagihan Angsuran</label>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Pilih Tagihan Kelompok</label>
                 <select id="pay-angsuran" onchange="updateInfoBayar()" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs"></select>
               </div>
               <div>
@@ -564,12 +598,12 @@
                   <tr>
                     <th class="p-2.5">No Kwitansi</th>
                     <th class="p-2.5">Tanggal</th>
-                    <th class="p-2.5">Nasabah</th>
+                    <th class="p-2.5">Kelompok</th>
                     <th class="p-2.5">Nominal</th>
                     <th class="p-2.5">Pokok</th>
                     <th class="p-2.5">Margin</th>
                     <th class="p-2.5">Metode</th>
-                    <th class="p-2.5 text-center">Aksi Kelola</th>
+                    <th class="p-2.5 text-center">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="tabel-pembayaran-list" class="divide-y divide-slate-100"></tbody>
@@ -685,11 +719,11 @@
         </div>
       </section>
 
-      <!-- TAB 10: LAPORAN KEUANGAN & PERKEMBANGAN DANA NASABAH -->
+      <!-- TAB 10: LAPORAN KEUANGAN -->
       <section id="tab-laporan" class="space-y-4 md:space-y-6 hidden">
         <div class="bg-white p-3 md:p-4 rounded-xl border border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-3">
           <div class="flex flex-wrap gap-2">
-            <button onclick="switchLaporan('perkembangan')" id="btn-lap-perkembangan" class="px-3 py-1.5 rounded-lg bg-emerald-700 text-white text-xs font-medium">Perkembangan Pembiayaan Nasabah</button>
+            <button onclick="switchLaporan('perkembangan')" id="btn-lap-perkembangan" class="px-3 py-1.5 rounded-lg bg-emerald-700 text-white text-xs font-medium">Perkembangan Pembiayaan Kelompok</button>
             <button onclick="switchLaporan('neraca')" id="btn-lap-neraca" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">Neraca</button>
             <button onclick="switchLaporan('labarugi')" id="btn-lap-labarugi" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">Laba Rugi</button>
             <button onclick="switchLaporan('aruskas')" id="btn-lap-aruskas" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">Arus Kas</button>
@@ -730,19 +764,18 @@
         </div>
       </section>
 
-      <!-- TAB 11: PENGATURAN PROFIL UPK & INTEGRASI REST API -->
+      <!-- TAB 11: PENGATURAN -->
       <section id="tab-pengaturan" class="hidden space-y-4 md:space-y-6">
         <div class="bg-white p-4 md:p-6 rounded-xl border border-slate-200 shadow-sm max-w-3xl mx-auto space-y-4 md:space-y-5">
           <div class="border-b pb-3">
             <h3 class="font-bold text-slate-800 text-sm">Profil Lembaga & Sinkronisasi Google Sheets</h3>
-            <p class="text-xs text-slate-500">Sesuaikan nama pejabat, pengurus, serta konfigurasi URL Endpoint Google Apps Script.</p>
+            <p class="text-xs text-slate-500">Konfigurasi URL Endpoint Google Apps Script Web App dan identitas pengurus.</p>
           </div>
 
-          <!-- ENDPOINT REST API UNTUK GITHUB / NETLIFY -->
           <div class="p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 space-y-1.5 text-xs">
             <label class="block font-bold text-emerald-950">Google Apps Script Web App URL (Endpoint Sinkronisasi)</label>
             <input type="text" id="cfg-gas-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-white border border-emerald-300 rounded-lg px-3 py-2 outline-none font-medium">
-            <p class="text-[10px] text-emerald-700">Deploy Google Apps Script sebagai Web App (Akses: <b>Anyone / Siapa Saja</b>) lalu tempel URL-nya di sini agar tersimpan permanen.</p>
+            <p class="text-[10px] text-emerald-700">Deploy Google Apps Script sebagai Web App (Akses: <b>Anyone / Siapa Saja</b>) lalu tempel URL-nya di sini agar data terhubung permanen.</p>
           </div>
 
           <form id="form-pengaturan" onsubmit="handlePengaturanSubmit(event)" class="space-y-4 text-xs">
@@ -780,7 +813,7 @@
                 <input type="number" id="set-jasa-flat" step="0.01" required value="1.75" class="w-full bg-slate-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500">
               </div>
               <div>
-                <label class="block font-semibold text-slate-700 mb-1">Plafon Minimal (Rp)</label>
+                <label class="block font-semibold text-slate-700 mb-1">Plafon Minimal Kelompok (Rp)</label>
                 <input type="number" id="set-plafon-min" step="100000" required value="5000000" class="w-full bg-slate-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500">
               </div>
             </div>
@@ -798,23 +831,22 @@
   </main>
 
   <!-- ============================================================== -->
-  <!-- MODAL DOKUMEN AKAD (6 PASAL LENGKAP) -->
+  <!-- MODAL DOKUMEN AKAD MURABAHAH KOLEKTIF DENGAN TABEL ANGGOTA -->
   <!-- ============================================================== -->
   <div id="modal-akad" onclick="handleBackdropClick(event, 'modal-akad')" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-2 md:p-6 overflow-y-auto">
-    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-slate-300 relative my-auto">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-slate-300 relative my-auto">
       
-      <!-- TOP FLOATING BAR -->
       <div class="p-3.5 bg-slate-900 text-white flex justify-between items-center rounded-t-2xl border-b border-slate-800 no-print flex-shrink-0 z-50">
         <div class="flex items-center gap-3">
           <img src="https://3.bp.blogspot.com/-32ZHn935ezc/Wnp2nVVpehI/AAAAAAAAGBM/1Trxtsh2Dj88FTi928aW6XSQqPCcnuSmQCLcBGAs/s1600/UPK%2BDAPM.jpg" alt="Logo" class="w-7 h-7 object-contain bg-white rounded p-0.5">
-          <span class="font-bold text-xs tracking-wide truncate">Surat Perjanjian Akad Murabahah bil Wakalah</span>
+          <span class="font-bold text-xs tracking-wide truncate">Surat Perjanjian Akad Murabahah Kolektif & Tanggung Renteng</span>
         </div>
         <div class="flex items-center gap-2">
           <button type="button" onclick="printElement('dokumen-akad-content')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow">
             <i class="fa-solid fa-print"></i> Cetak / PDF
           </button>
           <button type="button" onclick="closeModalAkad()" class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow">
-            <i class="fa-solid fa-xmark text-sm"></i> TUTUP / KEMBALI
+            <i class="fa-solid fa-xmark text-sm"></i> TUTUP
           </button>
         </div>
       </div>
@@ -826,8 +858,8 @@
               <img src="https://3.bp.blogspot.com/-32ZHn935ezc/Wnp2nVVpehI/AAAAAAAAGBM/1Trxtsh2Dj88FTi928aW6XSQqPCcnuSmQCLcBGAs/s1600/UPK%2BDAPM.jpg" alt="Logo DAPM" class="max-h-full max-w-full object-contain">
             </div>
             <div class="text-center flex-1 pr-16">
-              <h2 class="font-bold text-sm tracking-wider uppercase">PERJANJIAN PEMBIAYAAN SYARIAH (AKAD MURABAHAH)</h2>
-              <h3 class="font-bold text-xs uppercase" id="akad-kop-nama">DAPM KECAMATAN TANETE RIATTANG BARAT</h3>
+              <h2 class="font-bold text-sm tracking-wider uppercase">PERJANJIAN PEMBIAYAAN SYARIAH KOLEKTIF (AKAD MURABAHAH)</h2>
+              <h3 class="font-bold text-xs uppercase" id="akad-kop-nama">UPK DAPM KECAMATAN TANETE RIATTANG BARAT</h3>
               <p class="text-[11px] font-sans font-semibold text-slate-700 mt-0.5">Nomor: <span id="akad-no-surat">.../UPK-DAPM-SYARIAH/TRB/...</span></p>
             </div>
           </div>
@@ -846,65 +878,73 @@
           </div>
 
           <div class="pl-4 space-y-1">
-            <p class="font-bold uppercase font-sans text-[11px] text-emerald-950">PIHAK KEDUA (MUDHARIB / PENERIMA PEMBIAYAAN):</p>
+            <p class="font-bold uppercase font-sans text-[11px] text-emerald-950">PIHAK KEDUA (MUDHARIB / KELOMPOK PENERIMA PEMBIAYAAN):</p>
             <table class="w-full text-xs">
-              <tr><td class="w-28 font-medium">Nama Nasabah/Kelompok</td><td class="w-3">:</td><td class="font-bold" id="akad-p2-nama">-</td></tr>
-              <tr><td class="font-medium">NIK / No Identitas</td><td>:</td><td id="akad-p2-nik">-</td></tr>
-              <tr><td class="font-medium">Pekerjaan / Usaha</td><td>:</td><td id="akad-p2-usaha">-</td></tr>
-              <tr><td class="font-medium align-top">Alamat Lengkap</td><td class="align-top">:</td><td id="akad-p2-alamat">-</td></tr>
+              <tr><td class="w-28 font-medium">Nama Kelompok</td><td class="w-3">:</td><td class="font-bold" id="akad-p2-nama">-</td></tr>
+              <tr><td class="font-medium">Ketua Kelompok</td><td>:</td><td id="akad-p2-nik">-</td></tr>
+              <tr><td class="font-medium">Sektor Usaha</td><td>:</td><td id="akad-p2-usaha">-</td></tr>
+              <tr><td class="font-medium align-top">Alamat Kelompok</td><td class="align-top">:</td><td id="akad-p2-alamat">-</td></tr>
             </table>
           </div>
 
           <p class="text-justify">
-            Kedua belah pihak sepakat untuk mengikatkan diri dalam <b>Perjanjian Pembiayaan Modal Usaha berdasarkan Prinsip Syariah</b> dengan menggunakan <b>Akad Murabahah bil Wakalah</b> (Jual Beli dengan Penunjukan Kuasa), dengan ketentuan dan pasal-pasal sebagai berikut:
+            Kedua belah pihak sepakat mengikatkan diri dalam <b>Perjanjian Pembiayaan Modal Usaha Berprinsip Syariah (Akad Murabahah bil Wakalah)</b> dengan ketentuan dan pasal-pasal sebagai berikut:
           </p>
 
           <div class="space-y-1 text-justify">
             <div class="font-bold text-center uppercase font-sans text-[11px]">PASAL 1: PRINSIP DASAR PEMBIAYAAN</div>
             <ol class="list-decimal pl-5 space-y-0.5">
-              <li>Pembiayaan ini diselenggarakan berdasarkan prinsip syariah dengan melarang adanya unsur riba (bunga), maysir (perjudian), dan gharar (ketidakpastian).</li>
-              <li>PIHAK PERTAMA menyediakan dana untuk pengadaan barang/modal usaha yang dibutuhkan oleh PIHAK KEDUA.</li>
+              <li>Pembiayaan ini diselenggarakan bebas riba, maysir, dan gharar.</li>
+              <li>PIHAK PERTAMA menyediakan modal untuk pengadaan barang modal usaha masing-masing anggota PIHAK KEDUA.</li>
             </ol>
           </div>
 
           <div class="space-y-1 text-justify">
-            <div class="font-bold text-center uppercase font-sans text-[11px]">PASAL 2: OBJEK DAN MARGIN KEUNTUNGAN</div>
-            <table class="w-full border border-slate-400 mt-1 mb-1 font-sans text-xs">
-              <tr class="border-b border-slate-300 bg-slate-50"><td class="p-1.5 font-semibold">Harga Pokok Barang / Modal Usaha</td><td class="p-1.5 text-right font-bold" id="akad-val-pokok">Rp 0</td></tr>
-              <tr class="border-b border-slate-300"><td class="p-1.5 font-semibold">Margin Keuntungan (Ushulah) UPK DAPM (1.75% Flat/bln)</td><td class="p-1.5 text-right font-bold" id="akad-val-jasa">Rp 0</td></tr>
-              <tr class="border-b border-slate-300 bg-emerald-50"><td class="p-1.5 font-bold">Total Harga Jual (Harga Pokok + Margin)</td><td class="p-1.5 text-right font-extrabold text-emerald-900" id="akad-val-total">Rp 0</td></tr>
-              <tr><td class="p-1.5 font-semibold">Jangka Waktu / Angsuran per Bulan</td><td class="p-1.5 text-right font-bold" id="akad-val-tenor">12 Bulan</td></tr>
+            <div class="font-bold text-center uppercase font-sans text-[11px]">PASAL 2: RINCIAN ALOKASI PLAFON ANGGOTA & TOTAL KEUNTUNGAN</div>
+            <p>Rincian pembiayaan individu dan angsuran bulanan masing-masing anggota kelompok adalah sebagai berikut:</p>
+            
+            <!-- TABEL ANGGOTA DINAMIS DI AKAD -->
+            <div class="overflow-x-auto my-2">
+              <table class="w-full border border-slate-400 font-sans text-[10px]">
+                <thead class="bg-slate-100 font-bold border-b border-slate-400">
+                  <tr>
+                    <th class="p-1.5 border text-center">No</th>
+                    <th class="p-1.5 border">Nama Anggota</th>
+                    <th class="p-1.5 border">NIK</th>
+                    <th class="p-1.5 border">Usaha</th>
+                    <th class="p-1.5 border text-right">Plafon Pokok (Rp)</th>
+                    <th class="p-1.5 border text-right">Angsuran / Bln (Rp)</th>
+                    <th class="p-1.5 border text-center w-28">Tanda Tangan</th>
+                  </tr>
+                </thead>
+                <tbody id="akad-tbody-anggota"></tbody>
+              </table>
+            </div>
+
+            <table class="w-full border border-slate-400 mt-2 mb-1 font-sans text-xs">
+              <tr class="border-b border-slate-300 bg-slate-50"><td class="p-1.5 font-semibold">Total Harga Pokok Modal Kelompok</td><td class="p-1.5 text-right font-bold" id="akad-val-pokok">Rp 0</td></tr>
+              <tr class="border-b border-slate-300"><td class="p-1.5 font-semibold">Margin Keuntungan (1.75% Flat/bln)</td><td class="p-1.5 text-right font-bold" id="akad-val-jasa">Rp 0</td></tr>
+              <tr class="border-b border-slate-300 bg-emerald-50"><td class="p-1.5 font-bold">Total Harga Jual (Pokok + Margin)</td><td class="p-1.5 text-right font-extrabold text-emerald-900" id="akad-val-total">Rp 0</td></tr>
+              <tr><td class="p-1.5 font-semibold">Jangka Waktu / Total Angsuran Kelompok per Bulan</td><td class="p-1.5 text-right font-bold" id="akad-val-tenor">12 Bulan</td></tr>
             </table>
-            <p class="text-[11px]">Jangka Waktu Angsuran terhitung sejak tanggal penandatanganan akad ini dengan jadwal jatuh tempo yang disepakati bersama.</p>
           </div>
 
           <div class="space-y-1 text-justify">
-            <div class="font-bold text-center uppercase font-sans text-[11px]">PASAL 3: KLAUSUL TANGGUNG RENTENG DAN JAMINAN UNJUK</div>
+            <div class="font-bold text-center uppercase font-sans text-[11px]">PASAL 3: KLAUSUL TANGGUNG RENTENG KOLEKTIF</div>
             <ol class="list-decimal pl-5 space-y-0.5">
-              <li><b>Tanggung Renteng:</b> PIHAK KEDUA wajib menerapkan sistem tanggung renteng di mana seluruh anggota kelompok bertanggung jawab secara kolektif terhadap pelunasan kewajiban pembayaran pembiayaan.</li>
-              <li><b>Jaminan Unjuk:</b> Apabila terjadi wanprestasi atau kelalaian pembayaran tanpa alasan yang dibenarkan syariat, PIHAK PERTAMA berhak mengeksekusi jaminan atau harta benda yang dikuasai oleh kelompok maupun anggotanya untuk menutup sisa kewajiban.</li>
+              <li><b>Tanggung Renteng Penuh:</b> Seluruh anggota kelompok yang tercantum pada Pasal 2 bertanggung jawab secara bersama-sama (tanggung renteng) melunasi kewajiban angsuran kelompok tepat waktu setiap bulannya.</li>
+              <li>Apabila salah satu anggota mengalami kendala pembayaran, maka anggota lain berkewajiban menalangi kewajiban tersebut hingga lunas.</li>
             </ol>
           </div>
 
           <div class="space-y-1 text-justify">
-            <div class="font-bold text-center uppercase font-sans text-[11px]">PASAL 4: KETENTUAN KETERLAMBATAN DAN TA'ZIR</div>
-            <ol class="list-decimal pl-5 space-y-0.5">
-              <li>Dalam hal PIHAK KEDUA terlambat melakukan pembayaran angsuran tanpa uzur syar'i, dikenakan sanksi denda administratif berupa <b>Ta'zir</b>.</li>
-              <li>Dana denda Ta'zir tersebut <b>tidak diakui sebagai pendapatan operasional UPK</b>, melainkan dicatat khusus untuk dana sosial atau kebajikan (<i>qardh hasan</i>) di lingkungan DAPM Tanete Riattang Barat.</li>
-            </ol>
+            <div class="font-bold text-center uppercase font-sans text-[11px]">PASAL 4: KETENTUAN SANKSI DAN TA'ZIR</div>
+            <p>Keterlambatan pembayaran angsuran tanpa uzur syar'i dikenakan sanksi Ta'zir (denda administratif) yang dialokasikan khusus untuk dana sosial (qardh hasan) dan bukan pendapatan UPK.</p>
           </div>
 
           <div class="space-y-1 text-justify">
             <div class="font-bold text-center uppercase font-sans text-[11px]">PASAL 5: PENYELESAIAN PERSELISIHAN</div>
-            <ol class="list-decimal pl-5 space-y-0.5">
-              <li>Segala perselisihan diselesaikan secara musyawarah untuk mufakat.</li>
-              <li>Apabila musyawarah tidak tercapai, penyelesaian hukum merujuk pada peraturan perundang-undangan Republik Indonesia dengan yurisdiksi di <b>Pengadilan Negeri Watampone</b>.</li>
-            </ol>
-          </div>
-
-          <div class="space-y-1 text-justify">
-            <div class="font-bold text-center uppercase font-sans text-[11px]">PASAL 6: PENUTUP</div>
-            <p>Perjanjian ini dibuat rangkap dua bermeterai cukup, masing-masing mempunyai kekuatan hukum yang sama dan mulai berlaku sejak tanggal ditandatangani.</p>
+            <p>Perselisihan diselesaikan dengan musyawarah mufakat, atau melalui yurisdiksi di Pengadilan Negeri Watampone.</p>
           </div>
 
           <div class="grid grid-cols-2 pt-6 text-center text-xs font-sans">
@@ -916,7 +956,7 @@
             </div>
             <div>
               <p class="font-bold">PIHAK KEDUA</p>
-              <p class="text-slate-600">Penerima Pembiayaan / Mudharib</p>
+              <p class="text-slate-600">Ketua Kelompok (Mewakili Anggota)</p>
               <div class="h-20 flex items-center justify-center">
                 <span class="border border-dashed border-slate-400 text-[10px] text-slate-400 px-3 py-1">Meterai Rp 10.000</span>
               </div>
@@ -984,7 +1024,7 @@
         </div>
         <div class="space-y-1.5" id="kwt-content-detail"></div>
         <div class="border-t pt-2 flex justify-between text-[11px]">
-          <div class="text-center w-28"><p>Nasabah / Penyetor,</p><div class="h-10"></div><p class="font-semibold" id="kwt-ttd-nasabah">( Nasabah )</p></div>
+          <div class="text-center w-28"><p>Ketua Kelompok,</p><div class="h-10"></div><p class="font-semibold" id="kwt-ttd-nasabah">( Ketua Kelompok )</p></div>
           <div class="text-center w-28"><p>Petugas UPK,</p><div class="h-10"></div><p class="font-semibold" id="kwt-ttd-petugas">( Harman, S.M )</p></div>
         </div>
       </div>
@@ -998,26 +1038,26 @@
     </div>
   </div>
 
-  <!-- MODAL FORM NASABAH -->
+  <!-- MODAL FORM NASABAH / KELOMPOK -->
   <div id="modal-nasabah" onclick="handleBackdropClick(event, 'modal-nasabah')" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-bold text-slate-800 text-sm" id="modal-nasabah-title">Tambah Data Nasabah Baru</h3>
+        <h3 class="font-bold text-slate-800 text-sm" id="modal-nasabah-title">Tambah Data Kelompok Baru</h3>
         <button type="button" onclick="closeModalNasabah()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times text-base"></i></button>
       </div>
       <form id="form-nasabah-modal" onsubmit="handleNasabahSubmit(event)" class="space-y-3 text-xs">
         <input type="hidden" id="nsb-id" value="">
         <div>
-          <label class="block font-semibold text-slate-600 mb-1">Nomor Induk Kependudukan (NIK)</label>
-          <input type="text" id="nsb-nik" required maxlength="16" placeholder="16 digit NIK KTP" class="w-full bg-slate-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500">
+          <label class="block font-semibold text-slate-600 mb-1">Nomor Induk Kependudukan (NIK) Ketua Kelompok</label>
+          <input type="text" id="nsb-nik" required maxlength="16" placeholder="16 digit NIK Ketua" class="w-full bg-slate-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500">
         </div>
         <div>
-          <label class="block font-semibold text-slate-600 mb-1">Nama Lengkap / Kelompok</label>
-          <input type="text" id="nsb-nama" required placeholder="Nama lengkap nasabah atau ketua kelompok" class="w-full bg-slate-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500">
+          <label class="block font-semibold text-slate-600 mb-1">Nama Kelompok / Ketua</label>
+          <input type="text" id="nsb-nama" required placeholder="Contoh: Kelompok Mawar / Ibu Aminah" class="w-full bg-slate-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500">
         </div>
         <div>
-          <label class="block font-semibold text-slate-600 mb-1">Alamat Lengkap</label>
-          <textarea id="nsb-alamat" required rows="2" placeholder="Alamat domisili lengkap" class="w-full bg-slate-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+          <label class="block font-semibold text-slate-600 mb-1">Alamat Domisili Kelompok</label>
+          <textarea id="nsb-alamat" required rows="2" placeholder="Alamat domisili kelompok" class="w-full bg-slate-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
@@ -1030,8 +1070,8 @@
           </div>
         </div>
         <div>
-          <label class="block font-semibold text-slate-600 mb-1">Sektor Usaha / Pekerjaan</label>
-          <input type="text" id="nsb-usaha" required placeholder="Contoh: Toko Sembako, Kerajinan Tenun" class="w-full bg-slate-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500">
+          <label class="block font-semibold text-slate-600 mb-1">Sektor Usaha Kelompok</label>
+          <input type="text" id="nsb-usaha" required placeholder="Contoh: Perdagangan Sembako, Pertanian" class="w-full bg-slate-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500">
         </div>
         <div class="flex justify-end gap-2 pt-2 border-t">
           <button type="button" onclick="closeModalNasabah()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-semibold">Batal</button>
@@ -1061,6 +1101,7 @@
       }],
       NASABAH: [],
       PENGAJUAN: [],
+      PENGAJUAN_DETAIL: [],
       APPROVAL: [],
       PEMBIAYAAN: [],
       PENCAIRAN: [],
@@ -1103,6 +1144,7 @@
 
       checkSession();
       renderAllViews();
+      kalkulasiKelompok();
       refreshData(true);
     });
 
@@ -1121,7 +1163,6 @@
       bd.classList.toggle('hidden');
     }
 
-    /* ---------------- AUTENTIKASI & LOGOUT SYSTEM ---------------- */
     function checkSession() {
       const isAuth = sessionStorage.getItem('upk_trb_auth');
       const loginOverlay = document.getElementById('login-screen');
@@ -1199,12 +1240,12 @@
       }
 
       const titles = {
-        dashboard: 'Dashboard Utama & Ringkasan Pembiayaan',
-        nasabah: 'Manajemen Data Nasabah & Kelompok',
-        pengajuan: 'Pengajuan Pembiayaan Syariah (Murabahah)',
+        dashboard: 'Dashboard Utama & Ringkasan Pembiayaan Kelompok',
+        nasabah: 'Manajemen Data Kelompok (Nasabah)',
+        pengajuan: 'Pengajuan Pembiayaan Kelompok (Plafon Bervariasi)',
         approval: 'Verifikasi & Approval Pembiayaan',
-        pencairan: 'Pencairan Dana & Akad Murabahah',
-        jadwal: 'Jadwal & Kartu Angsuran',
+        pencairan: 'Pencairan Dana & Akad Murabahah Kolektif',
+        jadwal: 'Jadwal & Kartu Angsuran Kelompok',
         pembayaran: 'Penerimaan Angsuran & Kwitansi',
         kasbank: 'Buku Kas Harian, Bank & Tarik Tunai',
         rekonsiliasi: 'Rekonsiliasi Kas & Bank',
@@ -1324,7 +1365,7 @@
       const jadwalList = DB.JADWAL || [];
 
       const pbyAktif = pbyList.filter(p => p.Status === 'Aktif');
-      const totalPlafonAktif = pbyAktif.reduce((acc, c) => acc + Number(c.Plafon || 0), 0);
+      const totalPlafonAktif = pbyAktif.reduce((acc, c) => acc + Number(c.Total_Plafon || c.Plafon || 0), 0);
 
       let totalSisa = 0;
       jadwalList.forEach(j => { totalSisa += Number(j.Sisa || 0); });
@@ -1333,7 +1374,7 @@
       const saldoBank = bankList.length > 0 ? Number(bankList[bankList.length - 1].Saldo || 0) : 0;
 
       document.getElementById('dash-pembiayaan-aktif').innerText = formatRupiah(totalPlafonAktif);
-      document.getElementById('dash-pembiayaan-count').innerText = pbyAktif.length + " Rekening Aktif";
+      document.getElementById('dash-pembiayaan-count').innerText = pbyAktif.length + " Kelompok Aktif";
       document.getElementById('dash-sisa-piutang').innerText = formatRupiah(totalSisa);
       document.getElementById('dash-saldo-kas').innerText = formatRupiah(saldoKas);
       document.getElementById('dash-saldo-bank').innerText = formatRupiah(saldoBank);
@@ -1368,11 +1409,12 @@
         tbody.innerHTML = `<tr><td colspan="7" class="text-center p-4 text-slate-400">Tidak ada tagihan tertunggak.</td></tr>`;
       } else {
         tbody.innerHTML = tagihanBelum.map(j => {
-          const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === j.ID_Nasabah) || { Nama_Nasabah: j.ID_Nasabah };
+          const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === j.ID_Nasabah) || { Nama_Nasabah_Kelompok: j.ID_Nasabah, Nama_Nasabah: j.ID_Nasabah };
+          const namaKel = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah || j.ID_Nasabah;
           return `
             <tr class="hover:bg-slate-50">
               <td class="p-2.5 md:p-3 font-medium">${j.ID_Pembiayaan}</td>
-              <td class="p-2.5 md:p-3 font-semibold text-slate-800">${nsb.Nama_Nasabah}</td>
+              <td class="p-2.5 md:p-3 font-semibold text-slate-800">${namaKel}</td>
               <td class="p-2.5 md:p-3">Angsuran Ke-${j.Angsuran_Ke}</td>
               <td class="p-2.5 md:p-3 text-red-600 font-medium">${j.Jatuh_Tempo}</td>
               <td class="p-2.5 md:p-3 font-bold">${formatRupiah(j.Total_Angsuran)}</td>
@@ -1437,31 +1479,36 @@
       });
     }
 
-    /* ---------------- CRUD NASABAH ---------------- */
+    /* ---------------- DATA NASABAH / KELOMPOK ---------------- */
     function renderNasabahTable() {
       const tbody = document.getElementById('tabel-nasabah');
       const list = DB.NASABAH || [];
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center p-4 text-slate-400">Belum ada data nasabah.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center p-4 text-slate-400">Belum ada data kelompok.</td></tr>`;
         return;
       }
-      tbody.innerHTML = list.map(n => `
-        <tr class="hover:bg-slate-50">
-          <td class="p-3 font-bold text-emerald-800">${n.ID_Nasabah}</td>
-          <td class="p-3">${n.NIK}</td>
-          <td class="p-3 font-bold text-slate-800">${n.Nama_Nasabah}</td>
-          <td class="p-3">${n.Pekerjaan_Usaha}</td>
-          <td class="p-3 text-emerald-700 font-medium"><i class="fa-brands fa-whatsapp"></i> ${n.No_WA || n.No_HP}</td>
-          <td class="p-3 text-slate-500 max-w-xs truncate">${n.Alamat}</td>
-          <td class="p-3 text-center">
-            <div class="flex justify-center gap-1.5">
-              <button onclick="ajukanUntukNasabah('${n.ID_Nasabah}')" title="Buat Pengajuan" class="px-2 py-1 bg-slate-800 hover:bg-slate-900 text-white rounded text-[11px]"><i class="fa-solid fa-file-circle-plus"></i></button>
-              <button onclick="openModalEditNasabah('${n.ID_Nasabah}')" title="Edit Nasabah" class="px-2 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded text-[11px]"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button onclick="hapusNasabah('${n.ID_Nasabah}')" title="Hapus Nasabah & Seluruh Catatan" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded text-[11px]"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = list.map(n => {
+        const nama = n.Nama_Nasabah_Kelompok || n.Nama_Nasabah;
+        const nik = n.NIK_Ketua || n.NIK;
+        const usaha = n.Jenis_Usaha_Kelompok || n.Pekerjaan_Usaha;
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="p-3 font-bold text-emerald-800">${n.ID_Nasabah}</td>
+            <td class="p-3">${nik}</td>
+            <td class="p-3 font-bold text-slate-800">${nama}</td>
+            <td class="p-3">${usaha}</td>
+            <td class="p-3 text-emerald-700 font-medium"><i class="fa-brands fa-whatsapp"></i> ${n.No_WA || n.No_HP}</td>
+            <td class="p-3 text-slate-500 max-w-xs truncate">${n.Alamat}</td>
+            <td class="p-3 text-center">
+              <div class="flex justify-center gap-1.5">
+                <button onclick="ajukanUntukNasabah('${n.ID_Nasabah}')" title="Buat Pengajuan Kelompok" class="px-2 py-1 bg-slate-800 hover:bg-slate-900 text-white rounded text-[11px]"><i class="fa-solid fa-file-circle-plus"></i></button>
+                <button onclick="openModalEditNasabah('${n.ID_Nasabah}')" title="Edit Kelompok" class="px-2 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded text-[11px]"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button onclick="hapusNasabah('${n.ID_Nasabah}')" title="Hapus Kelompok & Seluruh Catatan" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded text-[11px]"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
     function filterNasabah() {
@@ -1474,7 +1521,7 @@
     function openModalTambahNasabah() {
       document.getElementById('form-nasabah-modal').reset();
       document.getElementById('nsb-id').value = '';
-      document.getElementById('modal-nasabah-title').innerText = 'Tambah Data Nasabah Baru';
+      document.getElementById('modal-nasabah-title').innerText = 'Tambah Data Kelompok Baru';
       document.getElementById('modal-nasabah').classList.remove('hidden');
     }
 
@@ -1483,14 +1530,14 @@
       if (!nsb) return;
 
       document.getElementById('nsb-id').value = nsb.ID_Nasabah;
-      document.getElementById('nsb-nik').value = nsb.NIK;
-      document.getElementById('nsb-nama').value = nsb.Nama_Nasabah;
+      document.getElementById('nsb-nik').value = nsb.NIK_Ketua || nsb.NIK || '';
+      document.getElementById('nsb-nama').value = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah || '';
       document.getElementById('nsb-alamat').value = nsb.Alamat;
       document.getElementById('nsb-hp').value = nsb.No_HP;
       document.getElementById('nsb-wa').value = nsb.No_WA;
-      document.getElementById('nsb-usaha').value = nsb.Pekerjaan_Usaha;
+      document.getElementById('nsb-usaha').value = nsb.Jenis_Usaha_Kelompok || nsb.Pekerjaan_Usaha || '';
 
-      document.getElementById('modal-nasabah-title').innerText = 'Edit Data Nasabah (' + nsb.ID_Nasabah + ')';
+      document.getElementById('modal-nasabah-title').innerText = 'Edit Data Kelompok (' + nsb.ID_Nasabah + ')';
       document.getElementById('modal-nasabah').classList.remove('hidden');
     }
 
@@ -1528,18 +1575,18 @@
         }
 
         localStorage.setItem('upk_cached_db', JSON.stringify(DB));
-        showToast(res.message || 'Data nasabah berhasil disimpan');
+        showToast(res.message || 'Data kelompok berhasil disimpan');
         closeModalNasabah();
         renderAllViews();
       } catch (err) {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Data';
-        alert("Gagal menyimpan data nasabah: " + err.message);
+        alert("Gagal menyimpan data kelompok: " + err.message);
       }
     }
 
     async function hapusNasabah(idNasabah) {
-      if (!confirm(`PERINGATAN: Menghapus nasabah ${idNasabah} akan otomatis menghapus SELURUH data pengajuan, pembiayaan, jadwal, pembayaran, dan mutasi kas/bank terkait!\n\nLanjutkan penghapusan total?`)) return;
+      if (!confirm(`PERINGATAN: Menghapus kelompok ${idNasabah} akan otomatis menghapus SELURUH data pengajuan, pembiayaan, jadwal, pembayaran, dan mutasi kas/bank terkait!\n\nLanjutkan penghapusan total?`)) return;
 
       try {
         const res = await sendRemoteAction('deleteNasabah', idNasabah);
@@ -1551,85 +1598,109 @@
         DB.PEMBAYARAN = DB.PEMBAYARAN.filter(b => b.ID_Nasabah !== idNasabah);
         
         localStorage.setItem('upk_cached_db', JSON.stringify(DB));
-        showToast(res.message || 'Nasabah dan seluruh riwayat berhasil dihapus.');
+        showToast(res.message || 'Kelompok dan seluruh riwayat berhasil dihapus.');
         renderAllViews();
       } catch (err) {
         alert("Gagal menghapus: " + err.message);
       }
     }
 
-    /* ---------------- PENGAJUAN ---------------- */
-    function renderPengajuanSelect() {
-      const select = document.getElementById('aju-nasabah');
-      const list = DB.NASABAH || [];
-      select.innerHTML = '<option value="">-- Pilih Nasabah / Kelompok --</option>' + list.map(n => `<option value="${n.ID_Nasabah}">[${n.ID_Nasabah}] ${n.Nama_Nasabah} (${n.NIK})</option>`).join('');
-      kalkulasiPengajuan();
+    /* ---------------- PENGAJUAN DENGAN ANGGOTA DINAMIS ---------------- */
+    function tambahBarisAnggota() {
+      const tbody = document.getElementById('tbody-input-anggota');
+      const count = tbody.querySelectorAll('tr').length + 1;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="p-1.5 text-center text-slate-400 font-bold">${count}</td>
+        <td class="p-1"><input type="text" required placeholder="Nama Anggota ${count}" class="mem-nama w-full bg-slate-50 border rounded px-2 py-1 text-xs font-semibold"></td>
+        <td class="p-1"><input type="number" step="100000" min="500000" value="1000000" oninput="kalkulasiKelompok()" required class="mem-plafon w-full bg-slate-50 border rounded px-2 py-1 text-xs font-bold text-emerald-800"></td>
+        <td class="p-1 text-center"><button type="button" onclick="hapusBarisAnggota(this)" class="text-rose-500 hover:text-rose-700 p-1"><i class="fa-solid fa-trash"></i></button></td>
+      `;
+      tbody.appendChild(tr);
+      kalkulasiKelompok();
     }
 
-    function kalkulasiPengajuan() {
-      const plafon = Number(document.getElementById('aju-plafon').value) || 0;
+    function hapusBarisAnggota(btn) {
+      const tr = btn.closest('tr');
+      tr.remove();
+      document.querySelectorAll('#tbody-input-anggota tr').forEach((row, idx) => {
+        row.querySelector('td:first-child').innerText = idx + 1;
+      });
+      kalkulasiKelompok();
+    }
+
+    function kalkulasiKelompok() {
+      let totalPlafon = 0;
+      document.querySelectorAll('.mem-plafon').forEach(inp => {
+        totalPlafon += Number(inp.value) || 0;
+      });
+
       const tenor = Number(document.getElementById('aju-tenor').value) || 12;
       const jasaPersen = (DB.PENGATURAN && DB.PENGATURAN[0] && Number(DB.PENGATURAN[0].Jasa_Flat)) || 1.75;
 
-      const jasaPerBulan = Math.round(plafon * (jasaPersen / 100));
-      const totalJasa = jasaPerBulan * tenor;
-      const totalKewajiban = plafon + totalJasa;
+      const totalJasa = Math.round(totalPlafon * (jasaPersen / 100) * tenor);
+      const totalKewajiban = totalPlafon + totalJasa;
       const angsuranPerBulan = Math.round(totalKewajiban / tenor);
 
-      document.getElementById('sim-jasa-bln').innerText = formatRupiah(jasaPerBulan);
+      document.getElementById('sim-total-plafon').innerText = formatRupiah(totalPlafon);
       document.getElementById('sim-total-jasa').innerText = formatRupiah(totalJasa);
       document.getElementById('sim-total-kewajiban').innerText = formatRupiah(totalKewajiban);
       document.getElementById('sim-angsuran-bln').innerText = formatRupiah(angsuranPerBulan);
+    }
+
+    function renderPengajuanSelect() {
+      const select = document.getElementById('aju-nasabah');
+      const list = DB.NASABAH || [];
+      select.innerHTML = '<option value="">-- Pilih Kelompok / Nasabah --</option>' + list.map(n => {
+        const nama = n.Nama_Nasabah_Kelompok || n.Nama_Nasabah;
+        const nik = n.NIK_Ketua || n.NIK;
+        return `<option value="${n.ID_Nasabah}">[${n.ID_Nasabah}] ${nama} (${nik})</option>`;
+      }).join('');
     }
 
     async function handlePengajuanSubmit(e) {
       e.preventDefault();
       const btn = document.getElementById('btn-submit-pengajuan');
       btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Pengajuan...';
+
+      const rows = document.querySelectorAll('#tbody-input-anggota tr');
+      const anggotaList = [];
+
+      rows.forEach((row, idx) => {
+        anggotaList.push({
+          ID_Anggota: 'MEM-' + (idx + 1),
+          Nama_Anggota: row.querySelector('.mem-nama').value,
+          NIK: '-',
+          Usaha: '-',
+          Plafon: Number(row.querySelector('.mem-plafon').value) || 0
+        });
+      });
 
       const form = {
         ID_Nasabah: document.getElementById('aju-nasabah').value,
         Tujuan_Pembiayaan: document.getElementById('aju-tujuan').value,
-        Plafon: Number(document.getElementById('aju-plafon').value),
-        Tenor_Bulan: Number(document.getElementById('aju-tenor').value)
+        Tenor_Bulan: Number(document.getElementById('aju-tenor').value),
+        Anggota_List: anggotaList
       };
 
       if (!form.ID_Nasabah) { 
-        alert('Silakan pilih nasabah!'); 
+        alert('Silakan pilih kelompok terlebih dahulu!'); 
         btn.disabled = false;
-        btn.innerHTML = 'Kirim Pengajuan';
+        btn.innerHTML = 'Kirim Pengajuan Kelompok';
         return; 
       }
 
       try {
         const res = await sendRemoteAction('submitPengajuan', form);
         btn.disabled = false;
-        btn.innerHTML = 'Kirim Pengajuan';
+        btn.innerHTML = 'Kirim Pengajuan Kelompok';
         
-        const id = 'AJU-' + String(DB.PENGAJUAN.length + 1).padStart(3, '0');
-        const totJasa = form.Plafon * (1.75 / 100) * form.Tenor_Bulan;
-        const newAju = res.data || {
-          ID_Pengajuan: id,
-          No_Pengajuan: 'UPK-AJU/DEMO/' + id,
-          ID_Nasabah: form.ID_Nasabah,
-          Tujuan_Pembiayaan: form.Tujuan_Pembiayaan,
-          Plafon: form.Plafon,
-          Tenor_Bulan: form.Tenor_Bulan,
-          Total_Jasa: totJasa,
-          Total_Kewajiban: form.Plafon + totJasa,
-          Angsuran_Per_Bulan: Math.round((form.Plafon + totJasa) / form.Tenor_Bulan),
-          Status: 'Diajukan'
-        };
-        DB.PENGAJUAN.push(newAju);
-        
-        localStorage.setItem('upk_cached_db', JSON.stringify(DB));
-        showToast(res.message || 'Pengajuan pembiayaan berhasil diajukan.');
-        document.getElementById('form-pengajuan').reset();
-        renderAllViews();
+        showToast(res.message || 'Pengajuan pembiayaan kelompok berhasil diajukan.');
+        refreshData(true);
       } catch (err) {
         btn.disabled = false;
-        btn.innerHTML = 'Kirim Pengajuan';
+        btn.innerHTML = 'Kirim Pengajuan Kelompok';
         alert("Gagal: " + err.message);
       }
     }
@@ -1638,18 +1709,22 @@
       const tbody = document.getElementById('tabel-pengajuan-list');
       const list = DB.PENGAJUAN || [];
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center p-3 text-slate-400">Belum ada riwayat pengajuan.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center p-3 text-slate-400">Belum ada riwayat pengajuan.</td></tr>`;
         return;
       }
       tbody.innerHTML = list.map(a => {
-        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === a.ID_Nasabah) || { Nama_Nasabah: a.ID_Nasabah };
+        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === a.ID_Nasabah) || { Nama_Nasabah_Kelompok: a.ID_Nasabah, Nama_Nasabah: a.ID_Nasabah };
+        const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah;
+        const totalPlafon = a.Total_Plafon || a.Plafon;
+        const jumlahAnggota = a.Jumlah_Anggota || 1;
         return `
           <tr class="hover:bg-slate-50">
             <td class="p-2.5 font-bold text-emerald-800">${a.ID_Pengajuan}</td>
-            <td class="p-2.5 font-semibold text-slate-800">${nsb.Nama_Nasabah}</td>
-            <td class="p-2.5 font-bold text-emerald-800">${formatRupiah(a.Plafon)}</td>
+            <td class="p-2.5 font-semibold text-slate-800">${nama}</td>
+            <td class="p-2.5 font-medium">${jumlahAnggota} Orang</td>
+            <td class="p-2.5 font-bold text-emerald-800">${formatRupiah(totalPlafon)}</td>
             <td class="p-2.5">${a.Tenor_Bulan} Bulan</td>
-            <td class="p-2.5">${formatRupiah(a.Angsuran_Per_Bulan)}</td>
+            <td class="p-2.5 font-bold text-slate-900">${formatRupiah(a.Angsuran_Per_Bulan)}</td>
             <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-800">${a.Status}</span></td>
           </tr>
         `;
@@ -1666,20 +1741,21 @@
       const tbody = document.getElementById('tabel-approval-list');
       const list = (DB.PENGAJUAN || []).filter(a => a.Status === 'Diajukan');
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center p-6 text-slate-400">Tidak ada pengajuan yang menunggu persetujuan.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center p-6 text-slate-400">Tidak ada pengajuan yang menunggu persetujuan.</td></tr>`;
         return;
       }
       tbody.innerHTML = list.map(a => {
-        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === a.ID_Nasabah) || { Nama_Nasabah: a.ID_Nasabah, Pekerjaan_Usaha: '-' };
+        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === a.ID_Nasabah) || { Nama_Nasabah_Kelompok: a.ID_Nasabah, Nama_Nasabah: a.ID_Nasabah };
+        const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah;
+        const totalPlafon = a.Total_Plafon || a.Plafon;
+        const jumlahAnggota = a.Jumlah_Anggota || 1;
         return `
           <tr class="hover:bg-slate-50">
             <td class="p-3 font-bold text-emerald-800">${a.ID_Pengajuan}</td>
             <td class="p-3">${a.Tanggal_Pengajuan || '-'}</td>
-            <td class="p-3">
-              <div class="font-bold text-slate-800">${nsb.Nama_Nasabah}</div>
-              <div class="text-[11px] text-slate-500">${nsb.Pekerjaan_Usaha} (${a.Tujuan_Pembiayaan})</div>
-            </td>
-            <td class="p-3 font-bold text-emerald-800">${formatRupiah(a.Plafon)}</td>
+            <td class="p-3 font-bold text-slate-800">${nama}</td>
+            <td class="p-3 font-semibold text-emerald-800">${jumlahAnggota} Anggota</td>
+            <td class="p-3 font-bold text-emerald-800">${formatRupiah(totalPlafon)}</td>
             <td class="p-3">${a.Tenor_Bulan} Bln</td>
             <td class="p-3 font-semibold">${formatRupiah(a.Total_Kewajiban)}</td>
             <td class="p-3 text-center">
@@ -1694,34 +1770,12 @@
     }
 
     async function eksekusiApproval(idPengajuan, keputusan) {
-      if (!confirm(`Konfirmasi: Apakah Anda yakin ${keputusan} pembiayaan ini?`)) return;
+      if (!confirm(`Konfirmasi: Apakah Anda yakin ${keputusan} pembiayaan kelompok ini?`)) return;
 
       try {
         const res = await sendRemoteAction('processApproval', { ID_Pengajuan: idPengajuan, Keputusan: keputusan, Catatan: 'Disetujui Admin' });
-        const aju = DB.PENGAJUAN.find(a => a.ID_Pengajuan === idPengajuan);
-        if (aju) {
-          aju.Status = keputusan;
-          if (keputusan === 'Disetujui') {
-            const idPby = 'PB-' + String(DB.PEMBIAYAAN.length + 1).padStart(3, '0');
-            const newPby = res.pembiayaan || {
-              ID_Pembiayaan: idPby,
-              No_Pembiayaan: 'UPK-TRB/PBY/202608/' + idPby.replace('PB-', ''),
-              ID_Nasabah: aju.ID_Nasabah,
-              ID_Pengajuan: aju.ID_Pengajuan,
-              Plafon: aju.Plafon,
-              Tenor: aju.Tenor_Bulan,
-              Jasa_Persen: 1.75,
-              Total_Jasa: aju.Total_Jasa,
-              Total_Kewajiban: aju.Total_Kewajiban,
-              Angsuran_Per_Bulan: aju.Angsuran_Per_Bulan,
-              Status: 'Disetujui'
-            };
-            DB.PEMBIAYAAN.push(newPby);
-          }
-        }
-        localStorage.setItem('upk_cached_db', JSON.stringify(DB));
         showToast(res.message || 'Status approval berhasil diproses.');
-        renderAllViews();
+        refreshData(true);
       } catch (err) {
         alert("Gagal memproses approval: " + err.message);
       }
@@ -1735,12 +1789,14 @@
         tbody.innerHTML = `<tr><td colspan="6" class="text-center p-4 text-slate-400">Tidak ada pembiayaan yang menunggu pencairan.</td></tr>`;
       } else {
         tbody.innerHTML = list.map(p => {
-          const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === p.ID_Nasabah) || { Nama_Nasabah: p.ID_Nasabah };
+          const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === p.ID_Nasabah) || { Nama_Nasabah_Kelompok: p.ID_Nasabah, Nama_Nasabah: p.ID_Nasabah };
+          const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah;
+          const totalPlafon = p.Total_Plafon || p.Plafon;
           return `
             <tr class="hover:bg-slate-50">
               <td class="p-3 font-bold text-emerald-800">${p.ID_Pembiayaan}</td>
-              <td class="p-3 font-bold text-slate-800">${nsb.Nama_Nasabah}</td>
-              <td class="p-3 font-bold text-emerald-800">${formatRupiah(p.Plafon)}</td>
+              <td class="p-3 font-bold text-slate-800">${nama}</td>
+              <td class="p-3 font-bold text-emerald-800">${formatRupiah(totalPlafon)}</td>
               <td class="p-3">${p.Tenor} Bulan</td>
               <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] bg-blue-100 text-blue-800 font-semibold">Disetujui</span></td>
               <td class="p-3 text-center">
@@ -1760,7 +1816,8 @@
         tbodyRiwayat.innerHTML = `<tr><td colspan="6" class="text-center p-4 text-slate-400">Belum ada riwayat pencairan.</td></tr>`;
       } else {
         tbodyRiwayat.innerHTML = cairList.map(c => {
-          const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === c.ID_Nasabah) || { Nama_Nasabah: c.ID_Nasabah };
+          const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === c.ID_Nasabah) || { Nama_Nasabah_Kelompok: c.ID_Nasabah, Nama_Nasabah: c.ID_Nasabah };
+          const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah;
           return `
             <tr class="hover:bg-slate-50">
               <td class="p-3 font-medium text-slate-800">
@@ -1768,7 +1825,7 @@
                 <div class="text-[10px] text-slate-500">${c.No_Kwitansi || c.ID_Pencairan}</div>
               </td>
               <td class="p-3">${c.Tanggal_Pencairan}</td>
-              <td class="p-3 font-bold text-slate-800">${nsb.Nama_Nasabah}</td>
+              <td class="p-3 font-bold text-slate-800">${nama}</td>
               <td class="p-3 font-bold text-emerald-800">${formatRupiah(c.Nominal)}</td>
               <td class="p-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-700 font-semibold rounded text-[10px]">${c.Sumber_Dana}</span></td>
               <td class="p-3 text-center">
@@ -1788,7 +1845,7 @@
     }
 
     async function eksekusiPencairan(idPembiayaan, sumberDana) {
-      if (!confirm(`Cairkan pembiayaan dan terbitkan Akad Murabahah bil Wakalah melalui Sumber Dana: ${sumberDana}?`)) return;
+      if (!confirm(`Cairkan pembiayaan dan terbitkan Akad Murabahah Kolektif melalui Sumber Dana: ${sumberDana}?`)) return;
 
       const form = {
         ID_Pembiayaan: idPembiayaan,
@@ -1798,55 +1855,15 @@
 
       try {
         const res = await sendRemoteAction('processPencairan', form);
-        const pby = DB.PEMBIAYAAN.find(p => p.ID_Pembiayaan === idPembiayaan);
-        if (pby) {
-          pby.Status = 'Aktif';
-          pby.Tanggal_Pencairan = form.Tanggal_Pencairan;
-          const idCr = 'CR-' + String(DB.PENCAIRAN.length + 1).padStart(3, '0');
-          const noAkadDemo = res.noAkad || `00${DB.PENCAIRAN.length + 1}/UPK-DAPM-SYARIAH/TRB/2026`;
-          DB.PENCAIRAN.push({
-            ID_Pencairan: idCr,
-            No_Pencairan: 'UPK-TRB/KWT-CR/DEMO/' + idCr,
-            ID_Pembiayaan: pby.ID_Pembiayaan,
-            ID_Nasabah: pby.ID_Nasabah,
-            Tanggal_Pencairan: form.Tanggal_Pencairan,
-            Nominal: pby.Plafon,
-            Sumber_Dana: sumberDana,
-            No_Kwitansi: res.noKwitansi || ('UPK-TRB/KWT-CR/DEMO/' + idCr),
-            No_Akad: noAkadDemo
-          });
-
-          // Generate Jadwal jika belum ada
-          if (!DB.JADWAL.some(j => j.ID_Pembiayaan === idPembiayaan)) {
-            for (let i = 1; i <= pby.Tenor; i++) {
-              let d = new Date();
-              d.setMonth(d.getMonth() + i);
-              DB.JADWAL.push({
-                ID_Angsuran: `${pby.ID_Pembiayaan}-A${String(i).padStart(2, '0')}`,
-                ID_Pembiayaan: pby.ID_Pembiayaan,
-                ID_Nasabah: pby.ID_Nasabah,
-                Angsuran_Ke: i,
-                Jatuh_Tempo: d.toISOString().split('T')[0],
-                Pokok: Math.round(pby.Plafon / pby.Tenor),
-                Jasa: Math.round(pby.Total_Jasa / pby.Tenor),
-                Total_Angsuran: pby.Angsuran_Per_Bulan,
-                Dibayar: 0,
-                Sisa: pby.Angsuran_Per_Bulan,
-                Status: 'Belum Bayar'
-              });
-            }
-          }
-        }
-        localStorage.setItem('upk_cached_db', JSON.stringify(DB));
         showToast(res.message || 'Pencairan berhasil dicatat.');
-        renderAllViews();
+        refreshData(true);
         bukaDokumenAkad(idPembiayaan, res.noAkad);
       } catch (err) {
         alert("Gagal memproses pencairan: " + err.message);
       }
     }
 
-    /* ---------------- DOKUMEN AKAD MURABAHAH ---------------- */
+    /* ---------------- DOKUMEN AKAD MURABAHAH KOLEKTIF ---------------- */
     function bukaDokumenAkad(idPembiayaan, customNoAkad) {
       try {
         const pby = (DB.PEMBIAYAAN || []).find(p => p.ID_Pembiayaan === idPembiayaan);
@@ -1855,7 +1872,7 @@
           return;
         }
 
-        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === pby.ID_Nasabah) || { Nama_Nasabah: '-', NIK: '-', Alamat: '-', Pekerjaan_Usaha: '-' };
+        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === pby.ID_Nasabah) || { Nama_Nasabah_Kelompok: '-', NIK_Ketua: '-', Alamat: '-', Jenis_Usaha_Kelompok: '-' };
         const cr = (DB.PENCAIRAN || []).find(c => c.ID_Pembiayaan === idPembiayaan) || {};
         const set = (DB.PENGATURAN && DB.PENGATURAN[0]) || {
           Nama_UPK: 'UPK DAPM Tanete Riattang Barat',
@@ -1895,16 +1912,47 @@
         document.getElementById('akad-ttd-p1').innerText = set.Nama_Pengurus ? `( ${set.Nama_Pengurus} )` : '( H.Jadjidji Irfan )';
         document.getElementById('akad-ttd-p1-jabatan').innerText = set.Jabatan_Pengurus || 'Pengelola UPK DAPM';
 
-        document.getElementById('akad-p2-nama').innerText = nsb.Nama_Nasabah || '-';
-        document.getElementById('akad-p2-nik').innerText = nsb.NIK || '-';
-        document.getElementById('akad-p2-usaha').innerText = nsb.Pekerjaan_Usaha || '-';
+        const namaKel = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah || '-';
+        document.getElementById('akad-p2-nama').innerText = namaKel;
+        document.getElementById('akad-p2-nik').innerText = (nsb.NIK_Ketua || nsb.NIK || '-') + ' (Ketua)';
+        document.getElementById('akad-p2-usaha').innerText = nsb.Jenis_Usaha_Kelompok || nsb.Pekerjaan_Usaha || '-';
         document.getElementById('akad-p2-alamat').innerText = nsb.Alamat || '-';
-        document.getElementById('akad-ttd-p2').innerText = `( ${nsb.Nama_Nasabah || 'Nasabah'} )`;
+        document.getElementById('akad-ttd-p2').innerText = `( ${namaKel} )`;
 
-        document.getElementById('akad-val-pokok').innerText = formatRupiah(pby.Plafon);
+        const totalPlafon = pby.Total_Plafon || pby.Plafon;
+        document.getElementById('akad-val-pokok').innerText = formatRupiah(totalPlafon);
         document.getElementById('akad-val-jasa').innerText = formatRupiah(pby.Total_Jasa);
         document.getElementById('akad-val-total').innerText = formatRupiah(pby.Total_Kewajiban);
-        document.getElementById('akad-val-tenor').innerText = `${pby.Tenor || 12} Bulan (Angsuran: ${formatRupiah(pby.Angsuran_Per_Bulan)} / Bulan)`;
+        document.getElementById('akad-val-tenor').innerText = `${pby.Tenor || 12} Bulan (Angsuran Kelompok: ${formatRupiah(pby.Angsuran_Per_Bulan)} / Bulan)`;
+
+        // RENDER RINCIAN ANGGOTA DI AKAD
+        const details = (DB.PENGAJUAN_DETAIL || []).filter(d => d.ID_Pengajuan === pby.ID_Pengajuan || d.ID_Pembiayaan === pby.ID_Pembiayaan);
+        const tbodyAkad = document.getElementById('akad-tbody-anggota');
+        if (details.length > 0) {
+          tbodyAkad.innerHTML = details.map((m, idx) => `
+            <tr>
+              <td class="p-1.5 border text-center font-bold">${idx + 1}</td>
+              <td class="p-1.5 border font-bold">${m.Nama_Anggota}</td>
+              <td class="p-1.5 border">${m.NIK || '-'}</td>
+              <td class="p-1.5 border">${m.Usaha || '-'}</td>
+              <td class="p-1.5 border text-right font-semibold">${formatRupiah(m.Plafon_Individu)}</td>
+              <td class="p-1.5 border text-right font-bold text-emerald-900">${formatRupiah(m.Angsuran_Per_Bulan_Individu)}</td>
+              <td class="p-1.5 border text-center text-slate-300 text-[9px] pt-4">....................</td>
+            </tr>
+          `).join('');
+        } else {
+          tbodyAkad.innerHTML = `
+            <tr>
+              <td class="p-1.5 border text-center font-bold">1</td>
+              <td class="p-1.5 border font-bold">${namaKel}</td>
+              <td class="p-1.5 border">${nsb.NIK_Ketua || nsb.NIK || '-'}</td>
+              <td class="p-1.5 border">${nsb.Jenis_Usaha_Kelompok || '-'}</td>
+              <td class="p-1.5 border text-right font-semibold">${formatRupiah(totalPlafon)}</td>
+              <td class="p-1.5 border text-right font-bold text-emerald-900">${formatRupiah(pby.Angsuran_Per_Bulan)}</td>
+              <td class="p-1.5 border text-center text-slate-300 text-[9px] pt-4">....................</td>
+            </tr>
+          `;
+        }
 
         document.getElementById('modal-akad').classList.remove('hidden');
       } catch (err) {
@@ -1920,22 +1968,25 @@
 
     function showKwitansiPencairan(idPembiayaan, noKwitansi, sumber) {
       const pby = (DB.PEMBIAYAAN || []).find(p => p.ID_Pembiayaan === idPembiayaan);
-      const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === (pby ? pby.ID_Nasabah : '')) || { Nama_Nasabah: '-' };
+      const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === (pby ? pby.ID_Nasabah : '')) || { Nama_Nasabah_Kelompok: '-' };
+      const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah || '-';
       const set = (DB.PENGATURAN && DB.PENGATURAN[0]) || { Nama_UPK: 'UPK DAPM TANETE RIATTANG BARAT', Nama_Admin: 'Harman, S.M' };
       
       document.getElementById('kwt-head-upk').innerText = (set.Nama_UPK || 'UPK DAPM TANETE RIATTANG BARAT').toUpperCase();
-      document.getElementById('kwt-badge-tipe').innerText = 'KWITANSI PENCAIRAN PEMBIAYAAN';
+      document.getElementById('kwt-badge-tipe').innerText = 'KWITANSI PENCAIRAN PEMBIAYAAN KELOMPOK';
       document.getElementById('kwt-badge-tipe').className = 'inline-block px-2 py-0.5 bg-emerald-800 text-white font-bold rounded text-[10px]';
-      document.getElementById('kwt-ttd-nasabah').innerText = `( ${nsb.Nama_Nasabah} )`;
+      document.getElementById('kwt-ttd-nasabah').innerText = `( ${nama} )`;
       document.getElementById('kwt-ttd-petugas').innerText = `( ${set.Nama_Admin || 'Harman, S.M'} )`;
+
+      const totalPlafon = pby ? (pby.Total_Plafon || pby.Plafon) : 0;
 
       document.getElementById('kwt-content-detail').innerHTML = `
         <div class="flex justify-between border-b pb-1"><span class="text-slate-500">No. Bukti:</span><span class="font-bold text-slate-800">${noKwitansi}</span></div>
-        <div class="flex justify-between"><span class="text-slate-500">Diserahkan Kepada:</span><span class="font-bold text-slate-800">${nsb.Nama_Nasabah}</span></div>
-        <div class="flex justify-between"><span class="text-slate-500">Nominal Pencairan:</span><span class="font-extrabold text-emerald-800 text-sm">${formatRupiah(pby ? pby.Plafon : 0)}</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Diserahkan Kepada:</span><span class="font-bold text-slate-800">${nama}</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Nominal Pencairan:</span><span class="font-extrabold text-emerald-800 text-sm">${formatRupiah(totalPlafon)}</span></div>
         <div class="flex justify-between"><span class="text-slate-500">Sumber Dana:</span><span class="font-semibold text-slate-700">${sumber} UPK</span></div>
         <div class="flex justify-between"><span class="text-slate-500">Jangka Waktu:</span><span class="font-semibold text-slate-700">${pby ? pby.Tenor : 0} Bulan (Flat 1.75%/bln)</span></div>
-        <div class="p-2 bg-emerald-50 rounded border border-emerald-200 mt-2 text-[10px] text-emerald-900">* Dana pembiayaan syariah ini telah dicairkan penuh sesuai Akad Murabahah.</div>
+        <div class="p-2 bg-emerald-50 rounded border border-emerald-200 mt-2 text-[10px] text-emerald-900">* Dana pembiayaan syariah kelompok ini telah dicairkan sesuai Akad Murabahah Kolektif.</div>
       `;
       document.getElementById('modal-kwitansi').classList.remove('hidden');
     }
@@ -1953,8 +2004,9 @@
         return;
       }
       select.innerHTML = list.map(p => {
-        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === p.ID_Nasabah) || { Nama_Nasabah: p.ID_Nasabah };
-        return `<option value="${p.ID_Pembiayaan}">[${p.ID_Pembiayaan}] ${nsb.Nama_Nasabah} (${p.Status})</option>`;
+        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === p.ID_Nasabah) || { Nama_Nasabah_Kelompok: p.ID_Nasabah, Nama_Nasabah: p.ID_Nasabah };
+        const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah;
+        return `<option value="${p.ID_Pembiayaan}">[${p.ID_Pembiayaan}] ${nama} (${p.Status})</option>`;
       }).join('');
     }
 
@@ -1962,17 +2014,19 @@
       const select = document.getElementById('jadwal-filter-pembiayaan');
       const idPby = select.value;
       const pby = (DB.PEMBIAYAAN || []).find(p => p.ID_Pembiayaan === idPby);
-      const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === (pby ? pby.ID_Nasabah : '')) || { Nama_Nasabah: '-' };
+      const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === (pby ? pby.ID_Nasabah : '')) || { Nama_Nasabah_Kelompok: '-' };
+      const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah || '-';
       const set = (DB.PENGATURAN && DB.PENGATURAN[0]) || { Nama_UPK: 'UPK DAPM Tanete Riattang Barat' };
       
       document.getElementById('kartu-subhead').innerText = (set.Nama_UPK || 'UPK DAPM Tanete Riattang Barat').toUpperCase() + ', KAB. BONE';
 
       const headerBox = document.getElementById('jadwal-header-info');
       if (pby) {
+        const totalPlafon = pby.Total_Plafon || pby.Plafon;
         headerBox.innerHTML = `
-          <div><span class="text-slate-500 block">Nama Nasabah:</span><b class="text-slate-800">${nsb.Nama_Nasabah}</b></div>
-          <div><span class="text-slate-500 block">Harga Pokok:</span><b class="text-emerald-800">${formatRupiah(pby.Plafon)}</b></div>
-          <div><span class="text-slate-500 block">Margin (1.75% Flat):</span><b class="text-slate-800">${formatRupiah(pby.Total_Jasa)}</b></div>
+          <div><span class="text-slate-500 block">Nama Kelompok:</span><b class="text-slate-800">${nama}</b></div>
+          <div><span class="text-slate-500 block">Total Pokok:</span><b class="text-emerald-800">${formatRupiah(totalPlafon)}</b></div>
+          <div><span class="text-slate-500 block">Total Margin:</span><b class="text-slate-800">${formatRupiah(pby.Total_Jasa)}</b></div>
           <div><span class="text-slate-500 block">Status:</span><b class="text-emerald-700 uppercase">${pby.Status}</b></div>
         `;
       }
@@ -1980,7 +2034,7 @@
       const tbody = document.getElementById('tabel-jadwal-detail');
       const list = (DB.JADWAL || []).filter(j => j.ID_Pembiayaan === idPby);
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center p-4 text-slate-400">Pilih pembiayaan untuk melihat rincian jadwal angsuran.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center p-4 text-slate-400">Pilih pembiayaan untuk melihat rincian jadwal angsuran kelompok.</td></tr>`;
         return;
       }
       tbody.innerHTML = list.map(j => `
@@ -2005,9 +2059,10 @@
         select.innerHTML = '<option value="">Semua tagihan telah lunas</option>';
         return;
       }
-      select.innerHTML = '<option value="">-- Pilih Tagihan Angsuran --</option>' + list.map(j => {
-        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === j.ID_Nasabah) || { Nama_Nasabah: j.ID_Nasabah };
-        return `<option value="${j.ID_Angsuran}">[${j.ID_Pembiayaan}] ${nsb.Nama_Nasabah} - Angs Ke-${j.Angsuran_Ke} (Sisa: ${formatRupiah(j.Sisa)})</option>`;
+      select.innerHTML = '<option value="">-- Pilih Tagihan Kelompok --</option>' + list.map(j => {
+        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === j.ID_Nasabah) || { Nama_Nasabah_Kelompok: j.ID_Nasabah, Nama_Nasabah: j.ID_Nasabah };
+        const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah;
+        return `<option value="${j.ID_Angsuran}">[${j.ID_Pembiayaan}] ${nama} - Angs Ke-${j.Angsuran_Ke} (Sisa: ${formatRupiah(j.Sisa)})</option>`;
       }).join('');
       updateInfoBayar();
     }
@@ -2017,14 +2072,14 @@
       const jdw = (DB.JADWAL || []).find(j => j.ID_Angsuran === idAngs);
       const box = document.getElementById('pay-info-box');
       if (!jdw) {
-        box.innerHTML = 'Silakan pilih tagihan angsuran.';
+        box.innerHTML = 'Silakan pilih tagihan angsuran kelompok.';
         document.getElementById('pay-nominal').value = '';
         return;
       }
       document.getElementById('pay-nominal').value = jdw.Sisa;
       box.innerHTML = `
         <div class="flex justify-between"><span>Pokok Angsuran:</span><b class="text-slate-800">${formatRupiah(jdw.Pokok)}</b></div>
-        <div class="flex justify-between"><span>Margin Jasa (1.75%):</span><b class="text-slate-800">${formatRupiah(jdw.Jasa)}</b></div>
+        <div class="flex justify-between"><span>Margin Jasa:</span><b class="text-slate-800">${formatRupiah(jdw.Jasa)}</b></div>
         <div class="flex justify-between border-t pt-1"><span>Total Kewajiban Angsuran:</span><b class="text-emerald-900">${formatRupiah(jdw.Total_Angsuran)}</b></div>
       `;
     }
@@ -2054,31 +2109,9 @@
         btn.disabled = false;
         btn.innerHTML = 'Proses Pembayaran & Kwitansi';
 
-        const j = DB.JADWAL.find(item => item.ID_Angsuran === form.ID_Angsuran);
-        if (j) {
-          j.Dibayar += form.Nominal_Bayar;
-          j.Sisa = Math.max(0, j.Total_Angsuran - j.Dibayar);
-          if (j.Sisa === 0) j.Status = 'Lunas';
-
-          const bayarData = {
-            ID_Pembayaran: 'BYR-' + (DB.PEMBAYARAN.length + 1),
-            No_Kwitansi: res.noKwitansi || ('UPK-TRB/KWT-BYR/' + Date.now()),
-            ID_Angsuran: form.ID_Angsuran,
-            ID_Pembiayaan: j.ID_Pembiayaan,
-            ID_Nasabah: j.ID_Nasabah,
-            Tanggal_Bayar: form.Tanggal_Bayar,
-            Nominal_Bayar: form.Nominal_Bayar,
-            Pokok_Dibayar: Math.round(form.Nominal_Bayar * (j.Pokok / j.Total_Angsuran)),
-            Jasa_Dibayar: Math.round(form.Nominal_Bayar * (j.Jasa / j.Total_Angsuran)),
-            Metode_Bayar: form.Metode_Bayar
-          };
-          DB.PEMBAYARAN.push(bayarData);
-        }
-
-        localStorage.setItem('upk_cached_db', JSON.stringify(DB));
         showToast(res.message || 'Pembayaran berhasil dicatat.');
         showKwitansiPembayaran(form.ID_Angsuran, res.noKwitansi || ('UPK-TRB/KWT-BYR/' + Date.now()), form.Nominal_Bayar, form.Metode_Bayar);
-        renderAllViews();
+        refreshData(true);
       } catch (err) {
         btn.disabled = false;
         btn.innerHTML = 'Proses Pembayaran & Kwitansi';
@@ -2094,12 +2127,13 @@
         return;
       }
       tbody.innerHTML = list.map(b => {
-        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === b.ID_Nasabah) || { Nama_Nasabah: b.ID_Nasabah };
+        const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === b.ID_Nasabah) || { Nama_Nasabah_Kelompok: b.ID_Nasabah, Nama_Nasabah: b.ID_Nasabah };
+        const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah;
         return `
           <tr class="hover:bg-slate-50">
             <td class="p-2.5 font-bold text-emerald-800">${b.ID_Pembayaran || b.No_Pembayaran}</td>
             <td class="p-2.5">${b.Tanggal_Bayar}</td>
-            <td class="p-2.5 font-bold text-slate-800">${nsb.Nama_Nasabah}</td>
+            <td class="p-2.5 font-bold text-slate-800">${nama}</td>
             <td class="p-2.5 font-bold text-emerald-800">${formatRupiah(b.Nominal_Bayar)}</td>
             <td class="p-2.5">${formatRupiah(b.Pokok_Dibayar)}</td>
             <td class="p-2.5">${formatRupiah(b.Jasa_Dibayar)}</td>
@@ -2119,11 +2153,12 @@
     function openModalEditPembayaran(idPembayaran) {
       const b = (DB.PEMBAYARAN || []).find(p => p.ID_Pembayaran === idPembayaran);
       if (!b) return;
-      const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === b.ID_Nasabah) || { Nama_Nasabah: b.ID_Nasabah };
+      const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === b.ID_Nasabah) || { Nama_Nasabah_Kelompok: b.ID_Nasabah, Nama_Nasabah: b.ID_Nasabah };
+      const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah;
 
       document.getElementById('edit-pay-id').value = b.ID_Pembayaran;
       document.getElementById('edit-pay-id-angsuran').value = b.ID_Angsuran;
-      document.getElementById('edit-pay-tagihan-info').value = `[${b.ID_Pembiayaan}] ${nsb.Nama_Nasabah} (${b.ID_Angsuran})`;
+      document.getElementById('edit-pay-tagihan-info').value = `[${b.ID_Pembiayaan}] ${nama} (${b.ID_Angsuran})`;
       document.getElementById('edit-pay-tanggal').value = b.Tanggal_Bayar;
       document.getElementById('edit-pay-metode').value = b.Metode_Bayar || 'Kas';
       document.getElementById('edit-pay-nominal').value = b.Nominal_Bayar;
@@ -2164,12 +2199,10 @@
     }
 
     async function hapusPembayaran(idPembayaran) {
-      if (!confirm(`Apakah Anda yakin ingin membatalkan & menghapus pembayaran ini? Saldo tagihan jadwal angsuran akan dipulihkan.`)) return;
+      if (!confirm(`Apakah Anda yakin ingin membatalkan & menghapus pembayaran ini? Saldo tagihan jadwal angsuran kelompok akan dipulihkan.`)) return;
 
       try {
         const res = await sendRemoteAction('deletePembayaran', idPembayaran);
-        DB.PEMBAYARAN = DB.PEMBAYARAN.filter(p => p.ID_Pembayaran !== idPembayaran);
-        localStorage.setItem('upk_cached_db', JSON.stringify(DB));
         showToast(res.message || 'Pembayaran dihapus & tagihan dipulihkan.');
         refreshData(true);
       } catch (err) {
@@ -2179,18 +2212,19 @@
 
     function showKwitansiPembayaran(idAngsuran, noKwitansi, nominal, metode) {
       const jdw = (DB.JADWAL || []).find(j => j.ID_Angsuran === idAngsuran);
-      const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === (jdw ? jdw.ID_Nasabah : '')) || { Nama_Nasabah: '-' };
+      const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === (jdw ? jdw.ID_Nasabah : '')) || { Nama_Nasabah_Kelompok: '-' };
+      const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah || '-';
       const set = (DB.PENGATURAN && DB.PENGATURAN[0]) || { Nama_UPK: 'UPK DAPM TANETE RIATTANG BARAT', Nama_Admin: 'Harman, S.M' };
       
       document.getElementById('kwt-head-upk').innerText = (set.Nama_UPK || 'UPK DAPM TANETE RIATTANG BARAT').toUpperCase();
-      document.getElementById('kwt-badge-tipe').innerText = 'KWITANSI PEMBAYARAN ANGSURAN';
+      document.getElementById('kwt-badge-tipe').innerText = 'KWITANSI PEMBAYARAN ANGSURAN KELOMPOK';
       document.getElementById('kwt-badge-tipe').className = 'inline-block px-2 py-0.5 bg-emerald-800 text-white font-bold rounded text-[10px]';
-      document.getElementById('kwt-ttd-nasabah').innerText = `( ${nsb.Nama_Nasabah} )`;
+      document.getElementById('kwt-ttd-nasabah').innerText = `( ${nama} )`;
       document.getElementById('kwt-ttd-petugas').innerText = `( ${set.Nama_Admin || 'Harman, S.M'} )`;
 
       document.getElementById('kwt-content-detail').innerHTML = `
         <div class="flex justify-between border-b pb-1"><span class="text-slate-500">No. Bukti:</span><span class="font-bold text-slate-800">${noKwitansi}</span></div>
-        <div class="flex justify-between"><span class="text-slate-500">Telah Diterima Dari:</span><span class="font-bold text-slate-800">${nsb.Nama_Nasabah}</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Telah Diterima Dari:</span><span class="font-bold text-slate-800">${nama}</span></div>
         <div class="flex justify-between"><span class="text-slate-500">Pembayaran:</span><span class="font-semibold text-slate-700">Angsuran Ke-${jdw ? jdw.Angsuran_Ke : '-'} (${jdw ? jdw.ID_Pembiayaan : ''})</span></div>
         <div class="flex justify-between"><span class="text-slate-500">Jumlah Setoran:</span><span class="font-extrabold text-emerald-800 text-sm">${formatRupiah(nominal)}</span></div>
         <div class="flex justify-between"><span class="text-slate-500">Metode Bayar:</span><span class="font-semibold text-slate-700">${metode}</span></div>
@@ -2324,23 +2358,15 @@
 
       try {
         const res = await sendRemoteAction('saveRekonsiliasi', form);
-        const diff = Math.abs(form.Nominal_Sistem - form.Nominal_Catatan);
-        DB.REKONSILIASI.push({
-          ...form,
-          ID_Rekonsiliasi: 'REC-' + (DB.REKONSILIASI.length + 1),
-          Selisih: diff,
-          Status: diff === 0 ? 'Cocok' : 'Belum Cocok'
-        });
-        localStorage.setItem('upk_cached_db', JSON.stringify(DB));
         showToast(res.message || 'Rekonsiliasi berhasil dicatat.');
         document.getElementById('form-rekon').reset();
-        renderAllViews();
+        refreshData(true);
       } catch (err) {
         alert("Gagal: " + err.message);
       }
     }
 
-    /* ---------------- LAPORAN PERKEMBANGAN PEMBIAYAAN LENGKAP ---------------- */
+    /* ---------------- LAPORAN KEUANGAN ---------------- */
     function switchLaporan(tipe) {
       activeLaporan = tipe;
       ['perkembangan', 'neraca', 'labarugi', 'aruskas'].forEach(t => {
@@ -2378,7 +2404,7 @@
       const curYearMonth = todayStr.slice(0, 7);
 
       if (activeLaporan === 'perkembangan') {
-        title.innerText = 'Laporan Perkembangan Pembiayaan Pinjaman Dana Bergulir per Nasabah';
+        title.innerText = 'Laporan Perkembangan Pembiayaan Pinjaman Dana Bergulir per Kelompok';
         
         const pbyList = DB.PEMBIAYAAN || [];
         const bayarList = DB.PEMBAYARAN || [];
@@ -2403,9 +2429,10 @@
         }
 
         const rowsHtml = pbyList.map((p, idx) => {
-          const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === p.ID_Nasabah) || { Nama_Nasabah: p.ID_Nasabah };
-          
-          const targetP = Number(p.Plafon || 0);
+          const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === p.ID_Nasabah) || { Nama_Nasabah_Kelompok: p.ID_Nasabah, Nama_Nasabah: p.ID_Nasabah };
+          const nama = nsb.Nama_Nasabah_Kelompok || nsb.Nama_Nasabah;
+
+          const targetP = Number(p.Total_Plafon || p.Plafon || 0);
           const targetJ = Number(p.Total_Jasa || 0);
           const targetTot = targetP + targetJ;
 
@@ -2436,7 +2463,6 @@
           const saldoJ = Math.max(0, targetJ - kumuJ);
           const saldoTot = saldoP + saldoJ;
 
-          // Hitung Tunggakan Jatuh Tempo
           const pbyJadwal = jadwalList.filter(j => j.ID_Pembiayaan === p.ID_Pembiayaan);
           let tunggakP = 0, tunggakJ = 0;
 
@@ -2469,7 +2495,7 @@
             <tr class="hover:bg-slate-50 text-[11px]">
               <td class="p-2 text-center border">${idx + 1}</td>
               <td class="p-2 border">
-                <div class="font-bold text-slate-800">${nsb.Nama_Nasabah}</div>
+                <div class="font-bold text-slate-800">${nama}</div>
                 <div class="text-[10px] text-slate-500">${p.ID_Pembiayaan} (${p.Tenor} Bln)</div>
               </td>
               <td class="p-2 text-right border">${formatRupiah(targetP)}</td>
@@ -2504,7 +2530,7 @@
               <thead class="bg-slate-100 text-slate-700 text-[10px] uppercase font-bold text-center">
                 <tr>
                   <th rowspan="2" class="p-2 border">No</th>
-                  <th rowspan="2" class="p-2 border">Nama Nasabah / SPK</th>
+                  <th rowspan="2" class="p-2 border">Nama Kelompok / SPK</th>
                   <th colspan="3" class="p-1.5 border bg-slate-200/70">Target Pembiayaan (Rp)</th>
                   <th colspan="2" class="p-1.5 border bg-slate-200/50">Realisasi s.d Bln Lalu</th>
                   <th colspan="2" class="p-1.5 border bg-emerald-100">Realisasi Bln Ini</th>
@@ -2582,7 +2608,7 @@
             <tr class="bg-slate-100 font-bold"><td colspan="2" class="p-2">ASET (AKTIVA)</td></tr>
             <tr><td class="p-2 pl-4">Kas UPK</td><td class="p-2 text-right">${formatRupiah(kas)}</td></tr>
             <tr><td class="p-2 pl-4">Rekening Bank UPK</td><td class="p-2 text-right">${formatRupiah(bank)}</td></tr>
-            <tr><td class="p-2 pl-4">Piutang Pembiayaan Syariah</td><td class="p-2 text-right">${formatRupiah(piutangPokok)}</td></tr>
+            <tr><td class="p-2 pl-4">Piutang Pembiayaan Syariah Kelompok</td><td class="p-2 text-right">${formatRupiah(piutangPokok)}</td></tr>
             <tr class="bg-emerald-50 font-bold border-t"><td class="p-2">TOTAL ASET</td><td class="p-2 text-right text-emerald-800">${formatRupiah(totalAset)}</td></tr>
             <tr class="bg-slate-100 font-bold"><td colspan="2" class="p-2">KEWAJIBAN & EKUITAS (PASIVA)</td></tr>
             <tr><td class="p-2 pl-4">Modal Dana Bergulir UPK & Surplus Berjalan</td><td class="p-2 text-right">${formatRupiah(totalAset)}</td></tr>
