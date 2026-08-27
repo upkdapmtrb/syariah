@@ -346,7 +346,7 @@
         </div>
       </section>
 
-      <!-- TAB 3: PENGAJUAN (TERPISAH PERORANGAN VS KELOMPOK) -->
+      <!-- TAB 3: PENGAJUAN -->
       <section id="tab-pengajuan" class="hidden space-y-4 md:space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
           <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm space-y-4 lg:col-span-5">
@@ -856,9 +856,7 @@
     </div>
   </main>
 
-  <!-- ============================================================== -->
-  <!-- MODAL DOKUMEN AKAD MURABAHAH (ADAPTIF PERORANGAN / KELOMPOK) -->
-  <!-- ============================================================== -->
+  <!-- MODAL DOKUMEN AKAD MURABAHAH -->
   <div id="modal-akad" onclick="handleBackdropClick(event, 'modal-akad')" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-2 md:p-6 overflow-y-auto">
     <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-slate-300 relative my-auto">
       
@@ -928,7 +926,6 @@
           <div class="space-y-1 text-justify">
             <div class="font-bold text-center uppercase font-sans text-[11px]">PASAL 2: RINCIAN HARGA POKOK & MARGIN KEUNTUNGAN</div>
             
-            <!-- DAFTAR ANGGOTA (MUNCUL KHUSUS KELOMPOK) -->
             <div id="akad-box-anggota-kelompok" class="overflow-x-auto my-2 hidden">
               <p class="font-bold text-[10px] mb-1 font-sans text-slate-700">Rincian Alokasi Anggota Kelompok & Tanggung Renteng:</p>
               <table class="w-full border border-slate-400 font-sans text-[10px]">
@@ -1116,6 +1113,8 @@
 
   <!-- JAVASCRIPT LOGIC CLIENT SIDE -->
   <script>
+    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwQcEZgDMjDYnWFxkkBfN_UPtbjRuVr7iFOMPg2E-Cf1XcgeGnQG3Yvplm9E3kyJqMn/exec';
+
     let DB = {
       PENGATURAN: [{
         Nama_UPK: 'UPK DAPM Tanete Riattang Barat',
@@ -1147,7 +1146,8 @@
     let currentBuku = 'Kas';
     let currentTipePengajuan = 'Perorangan';
     let chartInstance = null;
-    let GAS_API_URL = localStorage.getItem('upk_gas_url') || '';
+    let isSyncing = false;
+    let GAS_API_URL = localStorage.getItem('upk_gas_url') || DEFAULT_GAS_URL;
 
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('current-date').innerText = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -1159,9 +1159,7 @@
         try { DB = JSON.parse(cached); } catch(e) {}
       }
 
-      if (GAS_API_URL) {
-        document.getElementById('cfg-gas-url').value = GAS_API_URL;
-      }
+      document.getElementById('cfg-gas-url').value = GAS_API_URL;
 
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -1295,12 +1293,23 @@
       if (tabId === 'pengaturan') renderPengaturanForm();
     }
 
-    /* ---------------- HYBRID DATA COMMUNICATOR ---------------- */
-    function refreshData(fullReload) {
+    /* ---------------- OPTIMIZED DATA SYNC ENGINE ---------------- */
+    async function refreshData(fullReload) {
+      if (isSyncing) return;
+      isSyncing = true;
+
       const icon = document.getElementById('refresh-icon');
       const iconMob = document.getElementById('refresh-icon-mob');
       if (icon) icon.classList.add('fa-spin');
       if (iconMob) iconMob.classList.add('fa-spin');
+
+      const finalize = (success, msg) => {
+        isSyncing = false;
+        if (icon) icon.classList.remove('fa-spin');
+        if (iconMob) iconMob.classList.remove('fa-spin');
+        renderAllViews();
+        if (msg) showToast(msg, success);
+      };
 
       if (typeof google !== 'undefined' && google.script && google.script.run) {
         google.script.run
@@ -1308,43 +1317,36 @@
             if (res && res.data) {
               DB = res.data;
               localStorage.setItem('upk_cached_db', JSON.stringify(DB));
+              finalize(true, "Data Google Sheets berhasil disinkronkan!");
+            } else {
+              finalize(false, "Respon server kosong");
             }
-            if (icon) icon.classList.remove('fa-spin');
-            if (iconMob) iconMob.classList.remove('fa-spin');
-            renderAllViews();
-            showToast("Data Google Sheets berhasil disinkronkan!");
           })
           .withFailureHandler(err => {
-            if (icon) icon.classList.remove('fa-spin');
-            if (iconMob) iconMob.classList.remove('fa-spin');
-            showToast("Gagal sinkron: " + err.message, false);
+            finalize(false, "Gagal sinkron: " + err.message);
           })
           .getInitialData();
       } else if (GAS_API_URL) {
-        fetch(`${GAS_API_URL}?action=getInitialData`)
-          .then(res => res.json())
-          .then(res => {
-            if (res && res.data) {
-              DB = res.data;
-              localStorage.setItem('upk_cached_db', JSON.stringify(DB));
-            }
-            if (icon) icon.classList.remove('fa-spin');
-            if (iconMob) iconMob.classList.remove('fa-spin');
-            renderAllViews();
-            showToast("Sinkronisasi REST API berhasil!");
-          })
-          .catch(err => {
-            if (icon) icon.classList.remove('fa-spin');
-            if (iconMob) iconMob.classList.remove('fa-spin');
-            showToast("Mode Offline: Menggunakan cache lokal", false);
-            renderAllViews();
+        try {
+          const response = await fetch(`${GAS_API_URL}?action=getInitialData&t=${Date.now()}`, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
           });
+          const res = await response.json();
+          if (res && res.data) {
+            DB = res.data;
+            localStorage.setItem('upk_cached_db', JSON.stringify(DB));
+            finalize(true, "Sinkronisasi database berhasil!");
+          } else {
+            finalize(false, "Format data server tidak valid");
+          }
+        } catch (err) {
+          finalize(false, "Mode Offline: Menggunakan cache lokal");
+        }
       } else {
         setTimeout(() => {
-          if (icon) icon.classList.remove('fa-spin');
-          if (iconMob) iconMob.classList.remove('fa-spin');
-          renderAllViews();
-        }, 100);
+          finalize(true, "Menggunakan penyimpanan lokal");
+        }, 150);
       }
     }
 
@@ -1647,7 +1649,7 @@
       }
     }
 
-    /* ---------------- PENGAJUAN (DUAL MODE) ---------------- */
+    /* ---------------- PENGAJUAN ---------------- */
     function setTipePengajuan(tipe) {
       currentTipePengajuan = tipe;
       const btnP = document.getElementById('btn-toggle-perorangan');
@@ -1950,7 +1952,7 @@
       }
     }
 
-    /* ---------------- DOKUMEN AKAD SYARIAH ADAPTIF ---------------- */
+    /* ---------------- DOKUMEN AKAD SYARIAH ---------------- */
     function bukaDokumenAkad(idPembiayaan, customNoAkad) {
       try {
         const pby = (DB.PEMBIAYAAN || []).find(p => p.ID_Pembiayaan === idPembiayaan);
