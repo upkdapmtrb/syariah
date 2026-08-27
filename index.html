@@ -355,7 +355,6 @@
               <p class="text-xs text-slate-500">Pilih tipe pembiayaan (Perorangan Tunggal atau Kelompok Tanggung Renteng).</p>
             </div>
 
-            <!-- TOGGLE TIPE PEMBIAYAAN -->
             <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-lg">
               <button type="button" id="btn-toggle-perorangan" onclick="setTipePengajuan('Perorangan')" class="py-1.5 text-xs font-bold rounded-md bg-white text-blue-800 shadow-sm transition">
                 <i class="fa-solid fa-user mr-1"></i> Perorangan
@@ -384,14 +383,12 @@
                 </select>
               </div>
 
-              <!-- INPUT PLAFON PERORANGAN -->
               <div id="section-plafon-perorangan" class="space-y-1">
                 <label class="block text-xs font-semibold text-slate-600">Plafon Pembiayaan Pokok (Rp)</label>
                 <input type="number" id="aju-plafon-perorangan" min="5000000" step="100000" value="5000000" oninput="recalculatePengajuan()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold text-blue-900">
                 <span class="text-[10px] text-slate-400">Minimal plafon perorangan Rp 5.000.000,-</span>
               </div>
 
-              <!-- INPUT TABEL ANGGOTA KELOMPOK -->
               <div id="section-anggota-kelompok" class="space-y-2 border-t pt-3 hidden">
                 <div class="flex justify-between items-center">
                   <label class="block text-xs font-bold text-slate-800">Daftar Anggota & Plafon Bervariasi</label>
@@ -428,7 +425,6 @@
                 </div>
               </div>
 
-              <!-- SIMULASI KEUANGAN -->
               <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1 text-xs">
                 <div class="flex justify-between text-slate-600"><span>Total Pokok Plafon:</span><span id="sim-total-plafon" class="font-bold text-slate-900">Rp 5.000.000</span></div>
                 <div class="flex justify-between text-slate-600"><span>Margin Flat (1.75%/bln):</span><span id="sim-total-jasa" class="font-semibold text-slate-800">Rp 0</span></div>
@@ -1111,7 +1107,7 @@
 
   <div id="printable-container" class="print-only"></div>
 
-  <!-- JAVASCRIPT LOGIC CLIENT SIDE -->
+  <!-- JAVASCRIPT LOGIC CLIENT SIDE (OPTIMISTIC UI ENGINE) -->
   <script>
     const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwQcEZgDMjDYnWFxkkBfN_UPtbjRuVr7iFOMPg2E-Cf1XcgeGnQG3Yvplm9E3kyJqMn/exec';
 
@@ -1175,6 +1171,10 @@
       setTipePengajuan('Perorangan');
       refreshData(true);
     });
+
+    function saveCache() {
+      localStorage.setItem('upk_cached_db', JSON.stringify(DB));
+    }
 
     function showToast(msg, isSuccess = true) {
       const t = document.getElementById('toast');
@@ -1293,8 +1293,8 @@
       if (tabId === 'pengaturan') renderPengaturanForm();
     }
 
-    /* ---------------- OPTIMIZED DATA SYNC ENGINE ---------------- */
-    async function refreshData(fullReload) {
+    /* ---------------- OPTIMIZED BACKGROUND DATA SYNC ---------------- */
+    async function refreshData(isManual = false) {
       if (isSyncing) return;
       isSyncing = true;
 
@@ -1308,7 +1308,7 @@
         if (icon) icon.classList.remove('fa-spin');
         if (iconMob) iconMob.classList.remove('fa-spin');
         renderAllViews();
-        if (msg) showToast(msg, success);
+        if (isManual && msg) showToast(msg, success);
       };
 
       if (typeof google !== 'undefined' && google.script && google.script.run) {
@@ -1316,8 +1316,8 @@
           .withSuccessHandler(res => {
             if (res && res.data) {
               DB = res.data;
-              localStorage.setItem('upk_cached_db', JSON.stringify(DB));
-              finalize(true, "Data Google Sheets berhasil disinkronkan!");
+              saveCache();
+              finalize(true, "Data Google Sheets sinkron!");
             } else {
               finalize(false, "Respon server kosong");
             }
@@ -1335,8 +1335,8 @@
           const res = await response.json();
           if (res && res.data) {
             DB = res.data;
-            localStorage.setItem('upk_cached_db', JSON.stringify(DB));
-            finalize(true, "Sinkronisasi database berhasil!");
+            saveCache();
+            finalize(true, "Data Google Sheets sinkron!");
           } else {
             finalize(false, "Format data server tidak valid");
           }
@@ -1344,9 +1344,7 @@
           finalize(false, "Mode Offline: Menggunakan cache lokal");
         }
       } else {
-        setTimeout(() => {
-          finalize(true, "Menggunakan penyimpanan lokal");
-        }, 150);
+        setTimeout(() => finalize(true, "Data lokal siap"), 100);
       }
     }
 
@@ -1606,46 +1604,81 @@
 
     async function handleNasabahSubmit(e) {
       e.preventDefault();
-      const btn = document.getElementById('btn-submit-nasabah');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
-
+      
       const form = {
         ID_Nasabah: document.getElementById('nsb-id').value,
         Tipe_Nasabah: document.getElementById('nsb-tipe').value,
         NIK: document.getElementById('nsb-nik').value,
         Nama_Nasabah: document.getElementById('nsb-nama').value,
-        Nama_Ketua: document.getElementById('nsb-ketua').value,
+        Nama_Ketua: document.getElementById('nsb-ketua').value || '-',
         Alamat: document.getElementById('nsb-alamat').value,
         No_HP: document.getElementById('nsb-hp').value,
         No_WA: document.getElementById('nsb-wa').value,
         Pekerjaan_Usaha: document.getElementById('nsb-usaha').value
       };
 
+      // OPTIMISTIC LOCAL UPDATE (INSTAN MUNCUL)
+      if (!DB.NASABAH) DB.NASABAH = [];
+      const isEdit = Boolean(form.ID_Nasabah);
+      let localItem = { ...form };
+
+      if (isEdit) {
+        const idx = DB.NASABAH.findIndex(n => n.ID_Nasabah === form.ID_Nasabah);
+        if (idx !== -1) {
+          localItem.Tanggal_Daftar = DB.NASABAH[idx].Tanggal_Daftar;
+          localItem.Status = DB.NASABAH[idx].Status;
+          DB.NASABAH[idx] = localItem;
+        }
+      } else {
+        const prefix = form.Tipe_Nasabah === 'Kelompok' ? 'KLP' : 'NSB';
+        const tempId = prefix + '-' + String(DB.NASABAH.length + 1).padStart(3, '0');
+        localItem.ID_Nasabah = tempId;
+        localItem.Tanggal_Daftar = new Date().toISOString().split('T')[0];
+        localItem.Status = 'Aktif';
+        DB.NASABAH.unshift(localItem);
+      }
+
+      saveCache();
+      renderNasabahTable();
+      renderPengajuanSelect();
+      closeModalNasabah();
+      showToast(isEdit ? 'Data nasabah diperbarui!' : 'Nasabah berhasil ditambahkan!');
+
+      // SINKRONISASI LATAR BELAKANG
       try {
         const res = await sendRemoteAction('saveNasabah', form);
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Data';
-        
-        showToast(res.message || 'Data nasabah berhasil disimpan');
-        closeModalNasabah();
-        refreshData(true);
+        if (res && res.data) {
+          const idx = DB.NASABAH.findIndex(n => n.ID_Nasabah === localItem.ID_Nasabah || n.ID_Nasabah === res.data.ID_Nasabah);
+          if (idx !== -1) DB.NASABAH[idx] = res.data;
+          saveCache();
+          renderNasabahTable();
+          renderPengajuanSelect();
+        }
       } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Data';
-        alert("Gagal: " + err.message);
+        console.error("Sync error:", err);
       }
     }
 
     async function hapusNasabah(idNasabah) {
-      if (!confirm(`PERINGATAN: Menghapus nasabah/kelompok ${idNasabah} akan otomatis menghapus SELURUH data pengajuan, pembiayaan, jadwal, pembayaran, dan mutasi kas/bank terkait!\n\nLanjutkan penghapusan total?`)) return;
+      if (!confirm(`PERINGATAN: Hapus nasabah/kelompok ${idNasabah} beserta riwayat transaksinya?`)) return;
 
+      // OPTIMISTIC LOCAL REMOVE (INSTAN HILANG)
+      DB.NASABAH = (DB.NASABAH || []).filter(n => n.ID_Nasabah !== idNasabah);
+      DB.PENGAJUAN = (DB.PENGAJUAN || []).filter(a => a.ID_Nasabah !== idNasabah);
+      DB.PEMBIAYAAN = (DB.PEMBIAYAAN || []).filter(p => p.ID_Nasabah !== idNasabah);
+      DB.JADWAL = (DB.JADWAL || []).filter(j => j.ID_Nasabah !== idNasabah);
+      DB.PEMBAYARAN = (DB.PEMBAYARAN || []).filter(b => b.ID_Nasabah !== idNasabah);
+      DB.PENCAIRAN = (DB.PENCAIRAN || []).filter(c => c.ID_Nasabah !== idNasabah);
+
+      saveCache();
+      renderAllViews();
+      showToast('Data nasabah berhasil dihapus.');
+
+      // SINKRONISASI SERVER
       try {
-        const res = await sendRemoteAction('deleteNasabah', idNasabah);
-        showToast(res.message || 'Nasabah dan seluruh riwayat berhasil dihapus.');
-        refreshData(true);
+        await sendRemoteAction('deleteNasabah', idNasabah);
       } catch (err) {
-        alert("Gagal menghapus: " + err.message);
+        console.error("Gagal hapus di server:", err);
       }
     }
 
@@ -1734,55 +1767,85 @@
 
     async function handlePengajuanSubmit(e) {
       e.preventDefault();
-      const btn = document.getElementById('btn-submit-pengajuan');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Pengajuan...';
-
       const idNasabah = document.getElementById('aju-nasabah').value;
       if (!idNasabah) {
         alert('Silakan pilih nasabah terlebih dahulu!');
-        btn.disabled = false;
-        btn.innerHTML = 'Kirim Pengajuan';
         return;
       }
 
       const nsb = (DB.NASABAH || []).find(n => n.ID_Nasabah === idNasabah) || {};
+      const tenor = Number(document.getElementById('aju-tenor').value);
+      const tujuan = document.getElementById('aju-tujuan').value;
+      const jasaPersen = 1.75;
 
       let form = {
         ID_Nasabah: idNasabah,
         Tipe_Pembiayaan: currentTipePengajuan,
-        Tujuan_Pembiayaan: document.getElementById('aju-tujuan').value,
-        Tenor_Bulan: Number(document.getElementById('aju-tenor').value),
+        Tujuan_Pembiayaan: tujuan,
+        Tenor_Bulan: tenor,
         Nama_Nasabah: nsb.Nama_Nasabah || '',
         NIK: nsb.NIK || ''
       };
 
+      let totalPlafon = 0;
       if (currentTipePengajuan === 'Kelompok') {
         const rows = document.querySelectorAll('#tbody-input-anggota tr');
         const anggotaList = [];
         rows.forEach((row, idx) => {
+          const p = Number(row.querySelector('.mem-plafon').value) || 0;
+          totalPlafon += p;
           anggotaList.push({
             ID_Anggota: 'MEM-' + (idx + 1),
             Nama_Anggota: row.querySelector('.mem-nama').value,
-            Plafon: Number(row.querySelector('.mem-plafon').value) || 0
+            Plafon: p
           });
         });
         form.Anggota_List = anggotaList;
       } else {
-        form.Plafon = Number(document.getElementById('aju-plafon-perorangan').value);
+        totalPlafon = Number(document.getElementById('aju-plafon-perorangan').value);
+        form.Plafon = totalPlafon;
       }
 
+      const totalJasa = Math.round(totalPlafon * (jasaPersen / 100) * tenor);
+      const totalKewajiban = totalPlafon + totalJasa;
+      const angsuranPerBulan = Math.round(totalKewajiban / tenor);
+
+      // OPTIMISTIC LOCAL INSERT
+      const tempIdAju = 'AJU-' + String((DB.PENGAJUAN || []).length + 1).padStart(3, '0');
+      const localAju = {
+        ID_Pengajuan: tempIdAju,
+        Tipe_Pembiayaan: currentTipePengajuan,
+        ID_Nasabah: idNasabah,
+        Tanggal_Pengajuan: new Date().toISOString().split('T')[0],
+        Tujuan_Pembiayaan: tujuan,
+        Total_Plafon: totalPlafon,
+        Tenor_Bulan: tenor,
+        Total_Jasa: totalJasa,
+        Total_Kewajiban: totalKewajiban,
+        Angsuran_Per_Bulan: angsuranPerBulan,
+        Status: 'Diajukan'
+      };
+
+      if (!DB.PENGAJUAN) DB.PENGAJUAN = [];
+      DB.PENGAJUAN.unshift(localAju);
+      saveCache();
+      renderPengajuanTable();
+      renderApprovalTable();
+      renderDashboard();
+      showToast('Pengajuan pembiayaan berhasil dibuat!');
+      document.getElementById('form-pengajuan').reset();
+
+      // BACKGROUND SYNC
       try {
         const res = await sendRemoteAction('submitPengajuan', form);
-        btn.disabled = false;
-        btn.innerHTML = 'Kirim Pengajuan';
-        
-        showToast(res.message || 'Pengajuan pembiayaan berhasil diajukan.');
-        refreshData(true);
+        if (res && res.data && res.data.ID_Pengajuan) {
+          localAju.ID_Pengajuan = res.data.ID_Pengajuan;
+          saveCache();
+          renderPengajuanTable();
+          renderApprovalTable();
+        }
       } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = 'Kirim Pengajuan';
-        alert("Gagal: " + err.message);
+        console.error("Gagal sinkron pengajuan:", err);
       }
     }
 
@@ -1856,12 +1919,38 @@
     async function eksekusiApproval(idPengajuan, keputusan) {
       if (!confirm(`Konfirmasi: Apakah Anda yakin ${keputusan} pembiayaan ini?`)) return;
 
+      // OPTIMISTIC LOCAL UPDATE
+      const aju = (DB.PENGAJUAN || []).find(a => a.ID_Pengajuan === idPengajuan);
+      if (aju) {
+        aju.Status = keputusan;
+        if (keputusan === 'Disetujui') {
+          if (!DB.PEMBIAYAAN) DB.PEMBIAYAAN = [];
+          const idPby = 'PB-' + String(DB.PEMBIAYAAN.length + 1).padStart(3, '0');
+          DB.PEMBIAYAAN.unshift({
+            ID_Pembiayaan: idPby,
+            Tipe_Pembiayaan: aju.Tipe_Pembiayaan,
+            ID_Nasabah: aju.ID_Nasabah,
+            ID_Pengajuan: idPengajuan,
+            Total_Plafon: aju.Total_Plafon,
+            Tenor: aju.Tenor_Bulan,
+            Total_Jasa: aju.Total_Jasa,
+            Total_Kewajiban: aju.Total_Kewajiban,
+            Angsuran_Per_Bulan: aju.Angsuran_Per_Bulan,
+            Status: 'Disetujui'
+          });
+        }
+      }
+
+      saveCache();
+      renderAllViews();
+      showToast(`Status approval berhasil: ${keputusan}`);
+
+      // SYNC SERVER
       try {
-        const res = await sendRemoteAction('processApproval', { ID_Pengajuan: idPengajuan, Keputusan: keputusan, Catatan: 'Disetujui Admin' });
-        showToast(res.message || 'Status approval berhasil diproses.');
-        refreshData(true);
+        await sendRemoteAction('processApproval', { ID_Pengajuan: idPengajuan, Keputusan: keputusan, Catatan: 'Disetujui Admin' });
+        refreshData(false);
       } catch (err) {
-        alert("Gagal: " + err.message);
+        console.error("Gagal proses approval:", err);
       }
     }
 
@@ -1936,16 +2025,17 @@
     async function eksekusiPencairan(idPembiayaan, sumberDana) {
       if (!confirm(`Cairkan pembiayaan dan terbitkan Akad Murabahah melalui Sumber Dana: ${sumberDana}?`)) return;
 
+      const tglCair = new Date().toISOString().split('T')[0];
       const form = {
         ID_Pembiayaan: idPembiayaan,
         Sumber_Dana: sumberDana,
-        Tanggal_Pencairan: new Date().toISOString().split('T')[0]
+        Tanggal_Pencairan: tglCair
       };
 
       try {
         const res = await sendRemoteAction('processPencairan', form);
         showToast(res.message || 'Pencairan berhasil dicatat.');
-        refreshData(true);
+        refreshData(false);
         bukaDokumenAkad(idPembiayaan, res.noAkad);
       } catch (err) {
         alert("Gagal: " + err.message);
@@ -2179,10 +2269,6 @@
 
     async function handlePembayaranSubmit(e) {
       e.preventDefault();
-      const btn = document.getElementById('btn-submit-bayar');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
-
       const form = {
         ID_Angsuran: document.getElementById('pay-angsuran').value,
         Tanggal_Bayar: document.getElementById('pay-tanggal').value,
@@ -2192,22 +2278,15 @@
 
       if (!form.ID_Angsuran) { 
         alert('Pilih tagihan angsuran terlebih dahulu!'); 
-        btn.disabled = false;
-        btn.innerHTML = 'Proses Pembayaran & Kwitansi';
         return; 
       }
 
       try {
         const res = await sendRemoteAction('processPembayaran', form);
-        btn.disabled = false;
-        btn.innerHTML = 'Proses Pembayaran & Kwitansi';
-
         showToast(res.message || 'Pembayaran berhasil dicatat.');
         showKwitansiPembayaran(form.ID_Angsuran, res.noKwitansi || ('UPK-TRB/KWT-BYR/' + Date.now()), form.Nominal_Bayar, form.Metode_Bayar);
-        refreshData(true);
+        refreshData(false);
       } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = 'Proses Pembayaran & Kwitansi';
         alert("Gagal: " + err.message);
       }
     }
@@ -2263,10 +2342,6 @@
 
     async function handleEditPembayaranSubmit(e) {
       e.preventDefault();
-      const btn = document.getElementById('btn-edit-pay-submit');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
-
       const form = {
         ID_Pembayaran: document.getElementById('edit-pay-id').value,
         ID_Angsuran: document.getElementById('edit-pay-id-angsuran').value,
@@ -2277,27 +2352,29 @@
 
       try {
         const res = await sendRemoteAction('updatePembayaran', form);
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan';
         showToast(res.message || 'Pembayaran diperbarui.');
         closeModalEditPembayaran();
-        refreshData(true);
+        refreshData(false);
       } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan';
         alert("Gagal: " + err.message);
       }
     }
 
     async function hapusPembayaran(idPembayaran) {
-      if (!confirm(`Apakah Anda yakin ingin membatalkan & menghapus pembayaran ini? Saldo tagihan jadwal angsuran akan dipulihkan.`)) return;
+      if (!confirm(`Batalkan dan hapus transaksi pembayaran ini? Saldo tagihan jadwal akan dipulihkan.`)) return;
+
+      // OPTIMISTIC LOCAL REMOVE
+      DB.PEMBAYARAN = (DB.PEMBAYARAN || []).filter(b => b.ID_Pembayaran !== idPembayaran);
+      saveCache();
+      renderPembayaranTable();
+      renderDashboard();
+      showToast('Pembayaran berhasil dibatalkan.');
 
       try {
-        const res = await sendRemoteAction('deletePembayaran', idPembayaran);
-        showToast(res.message || 'Pembayaran dihapus & tagihan dipulihkan.');
-        refreshData(true);
+        await sendRemoteAction('deletePembayaran', idPembayaran);
+        refreshData(false);
       } catch (err) {
-        alert("Gagal: " + err.message);
+        console.error("Gagal hapus bayar:", err);
       }
     }
 
@@ -2374,10 +2451,6 @@
 
     async function handleKasBankSubmit(e) {
       e.preventDefault();
-      const btn = document.getElementById('btn-submit-kasbank');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
-
       const rawJenis = document.getElementById('kb-jenis').value;
       let buku = 'Kas';
       let jenis = 'Masuk';
@@ -2394,24 +2467,49 @@
         buku = 'Bank'; jenis = 'Keluar';
       }
 
-      const form = {
-        Buku: buku,
-        Jenis: jenis,
-        Nominal: Number(document.getElementById('kb-nominal').value),
-        Keterangan: document.getElementById('kb-keterangan').value
-      };
+      const nominal = Number(document.getElementById('kb-nominal').value);
+      const keterangan = document.getElementById('kb-keterangan').value;
+      const form = { Buku: buku, Jenis: jenis, Nominal: nominal, Keterangan: keterangan };
+
+      // OPTIMISTIC UPDATE KAS/BANK
+      if (jenis === 'Tarik_Bank') {
+        const lastBank = DB.BANK && DB.BANK.length > 0 ? Number(DB.BANK[DB.BANK.length - 1].Saldo || 0) : 0;
+        const lastKas = DB.KAS && DB.KAS.length > 0 ? Number(DB.KAS[DB.KAS.length - 1].Saldo || 0) : 0;
+        if (!DB.BANK) DB.BANK = [];
+        if (!DB.KAS) DB.KAS = [];
+        DB.BANK.push({ Tanggal: new Date().toISOString().split('T')[0], No_Referensi: 'MAN-TARIK', Keterangan: keterangan, Debit: 0, Kredit: nominal, Saldo: lastBank - nominal });
+        DB.KAS.push({ Tanggal: new Date().toISOString().split('T')[0], No_Referensi: 'MAN-TARIK', Keterangan: keterangan, Debit: nominal, Kredit: 0, Saldo: lastKas + nominal });
+      } else if (jenis === 'Setor_Bank') {
+        const lastBank = DB.BANK && DB.BANK.length > 0 ? Number(DB.BANK[DB.BANK.length - 1].Saldo || 0) : 0;
+        const lastKas = DB.KAS && DB.KAS.length > 0 ? Number(DB.KAS[DB.KAS.length - 1].Saldo || 0) : 0;
+        if (!DB.BANK) DB.BANK = [];
+        if (!DB.KAS) DB.KAS = [];
+        DB.KAS.push({ Tanggal: new Date().toISOString().split('T')[0], No_Referensi: 'MAN-SETOR', Keterangan: keterangan, Debit: 0, Kredit: nominal, Saldo: lastKas - nominal });
+        DB.BANK.push({ Tanggal: new Date().toISOString().split('T')[0], No_Referensi: 'MAN-SETOR', Keterangan: keterangan, Debit: nominal, Kredit: 0, Saldo: lastBank + nominal });
+      } else {
+        const targetArr = buku === 'Kas' ? DB.KAS : DB.BANK;
+        const lastSaldo = targetArr && targetArr.length > 0 ? Number(targetArr[targetArr.length - 1].Saldo || 0) : 0;
+        const newSaldo = jenis === 'Masuk' ? (lastSaldo + nominal) : (lastSaldo - nominal);
+        targetArr.push({
+          Tanggal: new Date().toISOString().split('T')[0],
+          No_Referensi: 'MAN-' + Date.now(),
+          Keterangan: keterangan,
+          Debit: jenis === 'Masuk' ? nominal : 0,
+          Kredit: jenis === 'Keluar' ? nominal : 0,
+          Saldo: newSaldo
+        });
+      }
+
+      saveCache();
+      renderBukuKasBank();
+      renderDashboard();
+      document.getElementById('form-kasbank').reset();
+      showToast('Transaksi kas/bank disimpan!');
 
       try {
-        const res = await sendRemoteAction('addKasBankTransaction', form);
-        btn.disabled = false;
-        btn.innerHTML = 'Simpan Transaksi';
-        showToast(res.message || 'Transaksi kas/bank berhasil disimpan.');
-        document.getElementById('form-kasbank').reset();
-        refreshData(true);
+        await sendRemoteAction('addKasBankTransaction', form);
       } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = 'Simpan Transaksi';
-        alert("Gagal: " + err.message);
+        console.error("Gagal sinkron kas bank:", err);
       }
     }
 
@@ -2437,22 +2535,38 @@
 
     async function handleRekonSubmit(e) {
       e.preventDefault();
+      const nSis = Number(document.getElementById('rekon-sistem').value);
+      const nCat = Number(document.getElementById('rekon-catatan').value);
+      const selisih = Math.abs(nSis - nCat);
       const form = {
         Sumber_Transaksi: document.getElementById('rekon-sumber').value,
-        Nominal_Sistem: Number(document.getElementById('rekon-sistem').value),
-        Nominal_Catatan: Number(document.getElementById('rekon-catatan').value),
+        Nominal_Sistem: nSis,
+        Nominal_Catatan: nCat,
         Catatan: document.getElementById('rekon-catatan-txt').value,
         Tanggal: new Date().toISOString().split('T')[0],
         No_Referensi: 'REK-' + Date.now()
       };
 
+      if (!DB.REKONSILIASI) DB.REKONSILIASI = [];
+      DB.REKONSILIASI.unshift({
+        ID_Rekonsiliasi: 'REC-' + String(DB.REKONSILIASI.length + 1).padStart(3, '0'),
+        Tanggal: form.Tanggal,
+        Sumber_Transaksi: form.Sumber_Transaksi,
+        Nominal_Sistem: nSis,
+        Nominal_Catatan: nCat,
+        Selisih: selisih,
+        Status: selisih === 0 ? 'Cocok' : 'Belum Cocok'
+      });
+
+      saveCache();
+      renderRekonsiliasiTable();
+      document.getElementById('form-rekon').reset();
+      showToast('Rekonsiliasi berhasil dicatat.');
+
       try {
-        const res = await sendRemoteAction('saveRekonsiliasi', form);
-        showToast(res.message || 'Rekonsiliasi berhasil dicatat.');
-        document.getElementById('form-rekon').reset();
-        refreshData(true);
+        await sendRemoteAction('saveRekonsiliasi', form);
       } catch (err) {
-        alert("Gagal: " + err.message);
+        console.error("Gagal sinkron rekon:", err);
       }
     }
 
@@ -2746,10 +2860,6 @@
 
     async function handlePengaturanSubmit(e) {
       e.preventDefault();
-      const btn = document.getElementById('btn-submit-pengaturan');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
-
       GAS_API_URL = document.getElementById('cfg-gas-url').value.trim();
       localStorage.setItem('upk_gas_url', GAS_API_URL);
 
@@ -2765,19 +2875,15 @@
         Tenor_Maksimal: 24
       };
 
+      DB.PENGATURAN[0] = form;
+      saveCache();
+      showToast('Pengaturan lembaga berhasil disimpan.');
+      renderAllViews();
+
       try {
-        const res = await sendRemoteAction('savePengaturan', form);
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan Lembaga';
-        DB.PENGATURAN[0] = form;
-        localStorage.setItem('upk_cached_db', JSON.stringify(DB));
-        showToast(res.message || 'Pengaturan lembaga berhasil disimpan.');
-        renderAllViews();
-        if (GAS_API_URL) refreshData(true);
+        await sendRemoteAction('savePengaturan', form);
       } catch (err) {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan Lembaga';
-        alert("Gagal: " + err.message);
+        console.error("Gagal sinkron pengaturan:", err);
       }
     }
 
